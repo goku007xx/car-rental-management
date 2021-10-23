@@ -17,6 +17,8 @@ outlet_id int NOT NULL,
 outlet_name varchar NOT NULL,
 outlet_location varchar NOT NULL,
 
+outlet_savings int NOT NULL,
+
 Primary key(outlet_id)
 );
 
@@ -28,39 +30,57 @@ expected_return_date DATE NOT NULL,
 customer_id int NOT NULL,
 outlet_id int NOT NULL,
 advance int default 1000,
+approves boolean,    -- for vehicle status
+
+plt_num CHAR(20) NOT NULL,
+
+reservation_status CHAR(20) NOT NULL,   -- for reservation status
+
+bill_id int NOT NULL,
 
 Primary key(reservation_id),
 Foreign key(customer_id) references customer(customer_id),
-Foreign key(outlet_id) references outlet(outlet_id)
+Foreign key(outlet_id) references outlet(outlet_id),
+Foreign key(bill_id) references rent(bill_id);
+Foreign key(plt_num) references vehicle(plate_number);
 );
 
 
+
+
+
 create table vehicle( 
-vehicle_id int NOT NULL,
 plate_number CHAR(20) NOT NULL,
 vehicle_status varchar NOT NULL default 'available',
 outlet_id int NOT NULL,
 model varchar NOT NULL,
 number_of_seats int NOT NULL,
+a/c boolean NOT NULL,
 
+emp_id NOT NULL,
+
+
+Foreign key(emp_id) references employee(employee_id)
 Foreign key(outlet_id) references outlet(outlet_id),
-Primary key(vehicle_id)
+Primary key(plate_number)
 );
 
 create table rent(
 bill_id int NOT NULL,
 taken_date DATE NOT NULL,
 return_date DATE NOT NULL,
-number_of_days int NOT NULL taken_date-return_date,
+number_of_days int NOT NULL,     -- taken_date-return_date,
 tax_amount int NOT NULL default 10,
 total_amount int NOT NULL,
 customer_id int NOT NULL,
 reservation_id int NOT NULL,
 refund int NOT NULL,
+plt_num CHAR(20) NOT NULL,
 
 Primary key(bill_id),
 Foreign key(customer_id) references customer(customer_id),
-Foreign key(reservation_id) references reservation(reservation_id)
+Foreign key(reservation_id) references reservation(reservation_id),
+Foreign key(plt_num) references vehicle
 );
 
 create table discount(
@@ -68,7 +88,7 @@ promo_id char(30) NOT NULL,
 discount_amount int NOT NULL,
 startdate DATE NOT NULL,
 enddate DATE NOT NULL,
-bill_id int,
+bill_id int NOT NULL,
 
 Primary key(Discount_type),
 Foreign key(bill_id) references rent(bill_id)
@@ -94,4 +114,11 @@ create table employee(
     Foreign key(outlet_id) references outlet(outlet_id)
 )
 
+create got_discount(
+    disc_id char(30) NOT NULL,
+    bill_id int NOT NULL,
+    deduction int NOT NULL,
 
+    Primary Key(disc_id,bill_id),
+    Foreign key(disc_id) references discount(promo_id)
+)
