@@ -16,7 +16,6 @@ create table outlet (
 outlet_id int NOT NULL,
 outlet_name varchar NOT NULL,
 outlet_location varchar NOT NULL,
-outlet_contact NOT NULL,
 
 Primary key(outlet_id)
 );
@@ -56,7 +55,7 @@ number_of_days int NOT NULL taken_date-return_date,
 tax_amount int NOT NULL default 10,
 total_amount int NOT NULL,
 customer_id int NOT NULL,
-reservation_id int NOT NULL,////////////////////////////////////
+reservation_id int NOT NULL,
 refund int NOT NULL,
 
 Primary key(bill_id),
@@ -78,8 +77,9 @@ Foreign key(bill_id) references rent(bill_id)
 create table outlet_contact(
 outlet_id int NOT NULL,
 outlet_phone char(12) NOT NULL,
-outlet_mail varchar NOT NULL,
+outlet_mail varchar,
 
+Primary key(outlet_id,outlet_phone)
 Foreign key(outlet_id) references outlet(outlet_id)
 );
 
