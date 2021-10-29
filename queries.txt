@@ -1,21 +1,51 @@
 for customer view
-list of all outlets - select * from outlet;
-list of available vehicles - select * from vehicle where vehicleStatus='not-taken';
-list of reservations made by customer - select * from reservation where customer_id=1;
+list of all outlets - select * from outlet;s1
+list of available vehicles - select * from vehicle where vehicleStatus='not-taken' and outlet_id='';s2
+list of reservations made by customer - select * from reservation where customer_id=1;s3
+when the customer selects the vehicle then the status of the vehicle is set to 
+update vehicle set vehicleStatus='selected' where is_selected='';
 
 for employee view
 list of all reservations made my all customers in that outlet - select * from reservation;
-list of all vehicles in that outlet - select * from vehicle;
+
+list of all vehicles in that outlet - select * from vehicle where ;s4
 list of all vehicles which are taken - select * from vehicle where vehicleStatus='taken';
 list of all vehicles which are not taken - select * from vehicle where vehicleStatus='not-taken';
 list of all vehicles which are selected - select * from vehicle where vehicleStatus='selected;
-list of vehicles registered by that employee - select * from vehicle where emp_id=1;
+//list of vehicles registered by that employee - select * from vehicle where emp_id=1;
+update those reservations whose approves is inprogress/cancelled
+
+finding the customer with maximum rent amount using max aggrigation group by outlet;c3
+finding the customer with most number of reservations;c4
+finding the outlet which has the max outlet_savings;c5
+finding the most popular outlet using count and group by outlet_id;c6
+
+selecting customer who has made reservation in all outlets; c7 (double negations)
+
+select * from employee where (select * from employee where is_mgr=TRUE);
 
 for manager view
-income of that outlet - select outlet_savings from outlet where outlet_name='narayan outlets';
-list of all employees working in his outlet - select * from employee where outlet_id=1;
+income of that outlet - select outlet_savings from outlet where outlet_id=1;       c1
+list of all employees working in his outlet - select * from employee where outlet_id=1;s5
 list of all vehicles in that outlet - select * from vehicle where outlet_id=1;
-list of all outlets - select * from outlets;
-list of all managers - select * from employee where is_mgr=TRUE;
-list of all employees - select * from employee;
-list of all vehicles - select * from vehicle;
+//list of all outlets - select * from outlets;
+//list of all managers - select * from employee where is_mgr=TRUE;
+//list of all employees - select * from employee;
+//list of all vehicles - select * from vehicle;
+group by vehicle based on number_of_seats;
+group by employee based on outlet;
+
+getting outlet contact
+select outlet_mail from outlet_cantact where outlet_id=1
+join
+
+
+getting final bill by joining the rent and got_discount;                          c2
+select bill_id from rent where reservation
+
+
+//for admin view
+
+
+changes
+remove the reservation by employee
