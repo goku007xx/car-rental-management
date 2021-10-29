@@ -28,6 +28,7 @@ create table employee(
     employee_mobile_number char(12) NOT NULL,
     employee_salary int NOT NULL,
     outlet_id int NOT NULL,
+    is_mgr boolean NOT NULL,
 
     Primary key(employee_id),
     Foreign key(outlet_id) references outlet(outlet_id)
@@ -40,6 +41,7 @@ outlet_id int NOT NULL,
 model varchar NOT NULL,
 number_of_seats int NOT NULL,
 ac boolean NOT NULL,
+vehicleStatus varchar NOT NULL,
 
 emp_id int NOT NULL,
 
@@ -58,7 +60,7 @@ expected_return_date DATE NOT NULL,
 customer_id int NOT NULL,
 outlet_id int NOT NULL,
 advance int default 1000,
-approves boolean,    -- for vehicle status
+emp_id int NOT NULL,
 
 plt_num CHAR(20) NOT NULL,
 
@@ -67,7 +69,8 @@ reservation_status CHAR(20) NOT NULL,   -- for reservation status
 Primary key(reservation_id),
 Foreign key(customer_id) references customer(customer_id),
 Foreign key(outlet_id) references outlet(outlet_id),
-Foreign key(plt_num) references vehicle(plate_number)
+Foreign key(plt_num) references vehicle(plate_number),
+Foreign key(emp_id) references employee(employee_id)
 );
 
 

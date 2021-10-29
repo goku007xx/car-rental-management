@@ -1,0 +1,21 @@
+for customer view
+list of all outlets - select * from outlet;
+list of available vehicles - select * from vehicle where vehicleStatus='not-taken';
+list of reservations made by customer - select * from reservation where customer_id=1;
+
+for employee view
+list of all reservations made my all customers in that outlet - select * from reservation;
+list of all vehicles in that outlet - select * from vehicle;
+list of all vehicles which are taken - select * from vehicle where vehicleStatus='taken';
+list of all vehicles which are not taken - select * from vehicle where vehicleStatus='not-taken';
+list of all vehicles which are selected - select * from vehicle where vehicleStatus='selected;
+list of vehicles registered by that employee - select * from vehicle where emp_id=1;
+
+for manager view
+income of that outlet - select outlet_savings from outlet where outlet_name='narayan outlets';
+list of all employees working in his outlet - select * from employee where outlet_id=1;
+list of all vehicles in that outlet - select * from vehicle where outlet_id=1;
+list of all outlets - select * from outlets;
+list of all managers - select * from employee where is_mgr=TRUE;
+list of all employees - select * from employee;
+list of all vehicles - select * from vehicle;
