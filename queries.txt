@@ -24,6 +24,9 @@ selecting customer who has made reservation in all outlets; c7 (double negations
 
 select * from employee where (select * from employee where is_mgr=TRUE);
 
+from rent table get the history of customer who taken vehicle 
+nested query Q4a in slides
+
 for manager view
 income of that outlet - select outlet_savings from outlet where outlet_id=1;       c1
 list of all employees working in his outlet - select * from employee where outlet_id=1;s5
