@@ -118,7 +118,7 @@ order by number_of_seats;
 --4) update outlet contact
 
 update outlet_contact
-set outlet_mail='fyouNagasundari@OK_sorry_I_take_it_back',outlet_phone='0212112123'
+set outlet_mail='ilikeWeed@cubahavana',outlet_phone='0212112123'
 where outlet_id=1;
 
     select * from outlet_contact where outlet_id=1
