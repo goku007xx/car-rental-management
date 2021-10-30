@@ -76,14 +76,14 @@ Foreign key(emp_id) references employee(employee_id)
 
 
 create table rent(
-bill_id int NOT NULL,
+bill_id SERIAL NOT NULL,
 taken_date DATE NOT NULL,
 return_date DATE NOT NULL,
 number_of_days int NOT NULL,     -- taken_date-return_date,
 tax_amount int NOT NULL default 10,
-total_amount int NOT NULL,
+total_amount int ,
 customer_id int NOT NULL,
-reservation_id int NOT NULL,
+reservation_id int NOT NULL UNIQUE,
 refund int NOT NULL,
 plt_num CHAR(20) NOT NULL,
 
@@ -108,7 +108,7 @@ Primary key(promo_id)
 create table outlet_contact(
 outlet_id int NOT NULL,
 outlet_phone char(12) NOT NULL,
-outlet_mail varchar,
+outlet_mail varchar(55),
 
 Primary key(outlet_id,outlet_phone),
 Foreign key(outlet_id) references outlet(outlet_id)

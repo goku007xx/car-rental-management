@@ -11,7 +11,7 @@ INSERT into Vehicle values('DA-12-2192',1,'omni',6,TRUE,'taken',1),('KA-18-1221'
 
 INSERT into reservation values(1, '11-01-2021', '12-01-2021','19-01-2021',1,1,1000,1,'DA-12-2192','inprogress'),(2, '23-01-2021', '25-01-2021','01-02-2021',1,2,1000,2,'KA-18-1221','cancel');
 
-INSERT into rent values(1,'12-01-2021','19-01-2021',7,100,3000,1,1,0,'DA-12-2192'),(2,'12-01-2021','19-01-2021',7,100,3000,1,1,0,'KA-18-1221');
+INSERT into rent(taken_date, return_date ,number_of_days ,tax_amount, total_amount, customer_id ,reservation_id ,refund ,plt_num) values('12-01-2021','19-01-2021',7,100,3000,1,1,0,'DA-12-2192'),('12-01-2021','19-01-2021',7,100,3000,1,2,0,'KA-18-1221');
 
 INSERT into discount values('AugustSeason',100,'19-01-2021','29-01-2021'),('JollySeason',399,'29-01-2021','31-03-2021');
 

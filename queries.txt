@@ -2,6 +2,7 @@ for customer view
 list of all outlets - select * from outlet;s1
 list of available vehicles - select * from vehicle where vehicleStatus='not-taken' and outlet_id='';s2
 list of reservations made by customer - select * from reservation where customer_id=1;s3
+
 when the customer selects the vehicle then the status of the vehicle is set to 
 update vehicle set vehicleStatus='selected' where is_selected='';
 
@@ -28,7 +29,9 @@ from rent table get the history of customer who taken vehicle
 nested query Q4a in slides
 
 for manager view
-income of that outlet - select outlet_savings from outlet where outlet_id=1;       c1
+income of that outlet - select outlet_savings from outlet where outlet_id=1;       s6
+
+ /// update income of outlet from reservation completed  ;       // c1
 list of all employees working in his outlet - select * from employee where outlet_id=1;s5
 list of all vehicles in that outlet - select * from vehicle where outlet_id=1;
 //list of all outlets - select * from outlets;
@@ -40,7 +43,7 @@ group by employee based on outlet;
 
 getting outlet contact
 select outlet_mail from outlet_cantact where outlet_id=1
-join
+
 
 
 getting final bill by joining the rent and got_discount;                          c2
