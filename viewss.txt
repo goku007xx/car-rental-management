@@ -1,0 +1,35 @@
+//for seeing only
+
+customer view   
+//customer: only his details            //insert only once,select only his
+outlet: outlets id,name,location        //select
+vehicle: except vehiclestatus           //select
+reservation: except emp_id              //insert 3 reservations,select
+rent: all                               //select if its approved by employee
+outlet_contact: all                     //select
+//if he gets the discount he will see
+
+employee view
+customer: all                           //select all employees in his outlet
+outlet: except savings                  //select all
+vehicle: all of his outlet              //insert,update,delete
+reservation: all of his outlet          //select,update,delete
+//rent: to show only approved reservations//select
+outlet_contact: everything of all outlets//select
+
+admin view
+customer: all                           //select
+outlets: all                            //select 
+employee: all                           //select,insert,update,delete
+vehicle: all                            //select,insert,update,delete
+reservation: all                        //select
+rent: all if its approved (depends on reservation)//select
+discount: all                           //select,insert,update,delete
+outlet_contact: all                     //select,update
+got_discount: all                       //select
+
+
+
+
+
+

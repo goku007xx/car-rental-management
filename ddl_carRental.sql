@@ -28,7 +28,6 @@ create table employee(
     employee_mobile_number char(12) NOT NULL,
     employee_salary int NOT NULL,
     outlet_id int NOT NULL,
-    is_mgr boolean NOT NULL,
 
     Primary key(employee_id),
     Foreign key(outlet_id) references outlet(outlet_id)
@@ -43,10 +42,7 @@ number_of_seats int NOT NULL,
 ac boolean NOT NULL,
 vehicleStatus varchar NOT NULL,
 
-emp_id int NOT NULL,
-
 Primary key(plate_number),
-Foreign key(emp_id) references employee(employee_id),
 Foreign key(outlet_id) references outlet(outlet_id)
 );
 
