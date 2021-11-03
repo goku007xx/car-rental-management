@@ -1,0 +1,1 @@
+--type all the queries in the multiple user creation in assignment 3

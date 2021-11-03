@@ -37,7 +37,7 @@ where plate_number='KA-18-1221' and vehicleStatus='not-taken';
 
 -- 5) getting outlet contact
 
-select outlet_mail,outlet_phone from outlet_contact where outlet_id=1
+select outlet_mail,outlet_phone from outlet_contact where outlet_id=1;
 
 
 -- ________________________________________________________________________
@@ -83,7 +83,7 @@ select * from reservation where outlet_id=1 and reservation_status='inprogress';
                 INSERT into reservation values(3, '21-04-2021', '28-04-2021','01-05-2021',2,1,1000,1,'DW-12-2192','inprogress');
 
         insert into rent(taken_date, return_date ,number_of_days ,total_amount, customer_id ,reservation_id ,refund ,plt_num )
-        select vehicle_taken_date,expected_return_date,expected_return_date-vehicle_taken_date,1000* customer_id,reservation_id ,advance*0.1 , plt_num
+        select vehicle_taken_date,expected_return_date,expected_return_date-vehicle_taken_date,1000*(expected_return_date-vehicle_taken_date), customer_id,reservation_id ,advance*0.1 , plt_num
         from reservation
         where reservation_id=3;
 
