@@ -151,7 +151,7 @@ class customer_view():
             else:
                 #context = {'error' : 'Sign In Please'}
                 #text = 'You must be signed in'
-                return redirect('signin')
+                return redirect('/signin/')
         else:
             return HttpResponse('METHOD NOT ALLOWED')
 
