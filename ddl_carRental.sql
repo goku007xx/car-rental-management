@@ -25,9 +25,9 @@ Primary key(outlet_id)
 create table employee(
     employee_id int NOT NULL,
     employee_name varchar NOT NULL,
-    employee_mobile_number char(12) NOT NULL,
-    employee_salary int NOT NULL,
-    outlet_id int NOT NULL, 
+    employee_mobile_number char(12) NOT NULL,   --Needed or not ?
+    employee_salary int NOT NULL,   --Needed or not ?
+    outlet_id int NOT NULL,
 
     Primary key(employee_id),
     Foreign key(outlet_id) references outlet(outlet_id) on update cascade on delete restrict
