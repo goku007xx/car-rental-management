@@ -27,10 +27,10 @@ create table employee(
     employee_name varchar NOT NULL,
     employee_mobile_number char(12) NOT NULL,
     employee_salary int NOT NULL,
-    outlet_id int NOT NULL,
+    outlet_id int NOT NULL, 
 
     Primary key(employee_id),
-    Foreign key(outlet_id) references outlet(outlet_id)
+    Foreign key(outlet_id) references outlet(outlet_id) on update cascade on delete restrict
 );
 
 
@@ -43,7 +43,7 @@ ac boolean NOT NULL,
 vehicleStatus varchar NOT NULL,
 
 Primary key(plate_number),
-Foreign key(outlet_id) references outlet(outlet_id)
+Foreign key(outlet_id) references outlet(outlet_id) on update cascade on delete restrict
 );
 
 
@@ -53,20 +53,20 @@ reservation_id int NOT NULL,
 reservation_date DATE NOT NULL,
 vehicle_taken_date DATE NOT NULL,
 expected_return_date DATE NOT NULL,
-customer_id int NOT NULL,
+customer_id int NOT NULL default -1,
 outlet_id int NOT NULL,
 advance int default 1000,
-emp_id int NOT NULL,
+emp_id int NOT NULL default -1,
 
-plt_num CHAR(20) NOT NULL,
+plt_num CHAR(20) NOT NULL default 'car sold/no more',
 
 reservation_status CHAR(20) NOT NULL,   -- for reservation status
 
 Primary key(reservation_id),
-Foreign key(customer_id) references customer(customer_id),
-Foreign key(outlet_id) references outlet(outlet_id),
-Foreign key(plt_num) references vehicle(plate_number),
-Foreign key(emp_id) references employee(employee_id)
+Foreign key(customer_id) references customer(customer_id) on update cascade on delete set default,
+Foreign key(outlet_id) references outlet(outlet_id) on update cascade on delete restrict,
+Foreign key(plt_num) references vehicle(plate_number) on update cascade on delete set default ,
+Foreign key(emp_id) references employee(employee_id) on update cascade on delete set default
 );
 
 
@@ -79,14 +79,14 @@ number_of_days int NOT NULL,     -- taken_date-return_date,
 tax_amount int NOT NULL default 10,
 total_amount int ,
 customer_id int NOT NULL,
-reservation_id int NOT NULL UNIQUE,
+reservation_id int NOT NULL UNIQUE default -1,
 refund int NOT NULL,
-plt_num CHAR(20) NOT NULL,
+plt_num CHAR(20) NOT NULL default 'car sold/no more',
 
 Primary key(bill_id),
-Foreign key(customer_id) references customer(customer_id),
-Foreign key(reservation_id) references reservation(reservation_id),
-Foreign key(plt_num) references vehicle(plate_number)
+Foreign key(customer_id) references customer(customer_id) on update cascade on delete set default,
+Foreign key(reservation_id) references reservation(reservation_id) on update cascade on delete restrict,
+Foreign key(plt_num) references vehicle(plate_number) on update cascade on delete set default
 );
 
 
@@ -107,14 +107,16 @@ outlet_phone char(12) NOT NULL,
 outlet_mail varchar(55),
 
 Primary key(outlet_id,outlet_phone),
-Foreign key(outlet_id) references outlet(outlet_id)
+Foreign key(outlet_id) references outlet(outlet_id) on update cascade on delete cascade
 );
 
 
 create table got_discount(
-    disc_id char(30) NOT NULL,
+    disc_id char(30) NOT NULL default 'promo discontinued',
     bill_id int NOT NULL,
 
     Primary Key(disc_id,bill_id),
-    Foreign key(disc_id) references discount(promo_id)
+    Foreign key(disc_id) references discount(promo_id) on update cascade on delete set default
 );
+
+
