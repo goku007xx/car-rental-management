@@ -30,7 +30,7 @@ create table employee(
     outlet_id int NOT NULL,
 
     Primary key(employee_id),
-    Foreign key(outlet_id) references outlet(outlet_id) on update cascade on delete restrict
+    Foreign key(outlet_id) references outlet(outlet_id) on delete restrict
 );
 
 
@@ -43,7 +43,7 @@ ac boolean NOT NULL,
 vehicleStatus varchar NOT NULL,
 
 Primary key(plate_number),
-Foreign key(outlet_id) references outlet(outlet_id) on update cascade on delete restrict
+Foreign key(outlet_id) references outlet(outlet_id) on delete restrict
 );
 
 
@@ -63,10 +63,10 @@ plt_num CHAR(20) NOT NULL default 'car sold/no more',
 reservation_status CHAR(20) NOT NULL,   -- for reservation status
 
 Primary key(reservation_id),
-Foreign key(customer_id) references customer(customer_id) on update cascade on delete set default,
-Foreign key(outlet_id) references outlet(outlet_id) on update cascade on delete restrict,
+Foreign key(customer_id) references customer(customer_id) on delete set default,
+Foreign key(outlet_id) references outlet(outlet_id)  on delete restrict,
 Foreign key(plt_num) references vehicle(plate_number) on update cascade on delete set default ,
-Foreign key(emp_id) references employee(employee_id) on update cascade on delete set default
+Foreign key(emp_id) references employee(employee_id) on delete set default
 );
 
 
@@ -84,8 +84,8 @@ refund int NOT NULL,
 plt_num CHAR(20) NOT NULL default 'car sold/no more',
 
 Primary key(bill_id),
-Foreign key(customer_id) references customer(customer_id) on update cascade on delete set default,
-Foreign key(reservation_id) references reservation(reservation_id) on update cascade on delete restrict,
+Foreign key(customer_id) references customer(customer_id) on delete set default,
+Foreign key(reservation_id) references reservation(reservation_id)  on delete restrict,
 Foreign key(plt_num) references vehicle(plate_number) on update cascade on delete set default
 );
 
@@ -107,7 +107,7 @@ outlet_phone char(12) NOT NULL,
 outlet_mail varchar(55),
 
 Primary key(outlet_id,outlet_phone),
-Foreign key(outlet_id) references outlet(outlet_id) on update cascade on delete cascade
+Foreign key(outlet_id) references outlet(outlet_id) on delete cascade
 );
 
 
@@ -116,7 +116,7 @@ create table got_discount(
     bill_id int NOT NULL,
 
     Primary Key(disc_id,bill_id),
-    Foreign key(disc_id) references discount(promo_id) on update cascade on delete set default
+    Foreign key(disc_id) references discount(promo_id) on delete set default
 );
 
 
