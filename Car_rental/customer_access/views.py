@@ -8,6 +8,11 @@ from .forms import Signup_form
 
 class authentication():
 
+
+    def testing(request):
+        conn = psycopg2.connect("dbname='trial_db' user='postgres' host='localhost' password='trial@123'")
+        cur = conn.cursor()
+
     @csrf_exempt
     def signup(request):
 
@@ -91,7 +96,7 @@ class authentication():
             password = fields[1].split('=')[1]
 
             if(phoneno and password):
-                query = f"SELECT id,username FROM customer where phone_no = %s and password = %s"
+                query = f"SELECT customer_id,username FROM customer where phone_no = %s and password = %s"
                 #print(query)
                 cur.execute(query,(phoneno,password))
                 row = cur.fetchone()
@@ -144,14 +149,34 @@ class customer_view():
         if request.method == 'GET':
             if request.session.has_key('phoneno'):
 
-                phoneno = request.session['phoneno']
-                context = {'phoneno' : phoneno}
-
-                return render(request,'home.html',context)
+                #phoneno = request.session['phoneno']
+                #context = {'phoneno' : phoneno}
+                context = {}
+                return render(request,'reservation.html',context)
             else:
                 #context = {'error' : 'Sign In Please'}
                 #text = 'You must be signed in'
                 return redirect('/signin/')
+
+        elif request.method == 'POST':
+            try:
+                conn = psycopg2.connect("dbname='trial_db' user='postgres' host='localhost' password='trial@123'")
+                cur = conn.cursor()
+            except:
+                print("Unable to connect to the database")
+                return HttpResponse("Unable to connect to the database")   
+
+            
+            reservation_string = request.body.decode('utf-8')
+            fields = reservation_string.split('&')
+            v_t_d = fields[0].split('=')[1]
+            e_r_d = fields[1].split('=')[1]
+            outlet_name = fields[2].split('=')[1]
+
+            if(v_t_d and e_r_d and outlet_name):
+                print("U gave values")
+            #print(f"Username --> {username} and Password --> {password} and Phoneno --> {phoneno}")
+
         else:
             return HttpResponse('METHOD NOT ALLOWED')
 
