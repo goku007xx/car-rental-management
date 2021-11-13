@@ -1,0 +1,31 @@
+<!DOCTYPE html>    
+<html>    
+<head>    
+    <title>Reservation Form</title>       
+</head>    
+<body>    
+    <h2>Vehicle Choices</h2><br>    
+    <div class="reservation">    
+    <form id="reservation" method="POST" action="/">    
+        <label>vehicle taken date</label>
+            <input type="text" value="{{v_t_d}}" readonly>
+        <br>
+        <label>Expected return date</label>
+            <input type="text" value="{{e_t_d}}" readonly>
+        <br>
+        <label>vehicle taken date</label>
+            <input type="text" value="{{v_t_d}}" >
+        
+        <label><b>Vehicles</b></label>
+    
+        {% for vehicle in vehicle_list %}
+            <input type="radio" id="{{vehicle}}" name="{{vehicle}}" value="{{vehicle}}">
+            <label for={{vehicle}}>{{vehicle}}</label><br>
+        {% endfor %}
+            
+        <br><br>  
+        <input type="submit" name="log" id="log" value="submit">          
+    </form>     
+</div>    
+</body>    
+</html>  

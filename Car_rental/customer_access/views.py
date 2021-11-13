@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt    # CSRF Token Ignore in post reqs
 from django.shortcuts import redirect
+from django.urls import reverse
 import json
 import psycopg2
 from .forms import Signup_form
@@ -145,6 +146,8 @@ class customer_view():
         else:
             return HttpResponse('METHOD NOT ALLOWED')
 
+    
+
     @csrf_exempt
     def reservation(request):
         if request.method == 'GET':
@@ -182,20 +185,38 @@ class customer_view():
                 print("Unable to connect to the database")
                 return HttpResponse("Unable to connect to the database")   
 
-            
+            '''
             reservation_string = request.body.decode('utf-8')
+            print(reservation_string)
             fields = reservation_string.split('&')
             v_t_d = fields[0].split('=')[1]
             e_r_d = fields[1].split('=')[1]
             outlet_name = fields[2].split('=')[1]
+            print(outlet_name)
+            '''
+            v_t_d = request.POST.get('Veh_take_date')
+            e_r_d = request.POST.get('exp_ret_date')
+            outlet_name = request.POST.get('outlet')
 
             if(v_t_d and e_r_d and outlet_name):
-                print(v_t_d)
-                print(e_r_d)
-                print(outlet_name)
+                outlet = outlet_name.split(",")[0]
+                print(outlet)
+                query1 = f"SELECT outlet_id FROM outlet where name = '{outlet}'"
+                cur.execute(query1)
+                row = cur.fetchone()
+                outlet_id = str(row[0])
+                
+                query = f"SELECT plate_number FROM vehicle where outlet_id = %s"
+
+                cur.execute(query,(outlet_id))
+                rows = cur.fetchall()
+                print(rows)
                 cur.close()
                 conn.close()
-                return HttpResponse("U gave values")
+                context = {'vehicle_list' : rows , 'v_t_d' : v_t_d , 'e_r_d' : e_r_d}
+                return render(request,'vehicle.html',context = context)
+                
+                #return HttpResponse("U gave values")
 
             else:
                 cur.close()
@@ -206,3 +227,31 @@ class customer_view():
         else:
             return HttpResponse('METHOD NOT ALLOWED')
 
+'''
+    def vehicle(request):
+        if request.session.has_key('phoneno'):
+            try:
+                conn = psycopg2.connect("dbname='trial_db' user='postgres' host='localhost' password='trial@123'")
+                cur = conn.cursor()
+            except:
+                print("Unable to connect to the database")
+                return HttpResponse("Unable to connect to the database")
+
+            print("Working here")
+            #for key, value in kwargs.items():
+            #    print("%s == %s" %(key, value))
+
+            outlet = outlet_name.split(",")[0]
+
+            query = 'SELECT plate_number FROM vehicles where outlet_name = %s'
+
+            cur.execute(query,(outlet))
+            rows = cur.fetchall()
+            print(rows)
+
+            cur.close()
+            conn.close()
+
+            context = {'outlet': list_of_vehicles}
+            return HttpResponse("WOrking")
+'''
