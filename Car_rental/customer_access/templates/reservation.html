@@ -19,8 +19,15 @@
         <br><br>  
         <label><b>Outlet    
         </b>    
-        </label>    
-        <input type="text" name="outlet_name" id="outlet_name" placeholder="outlet name">    
+        </label>
+        <select id="outlet" name="outlet">
+            <option value="none" selected disabled hidden>
+                Select an option
+            </option>
+            {% for outlet in outlets %}
+            <option value={{outlet}}> {{outlet}} </option>
+            {% endfor %}
+        </select>      
         <br><br>  
         <input type="submit" name="log" id="log" value="submit">          
     </form>     

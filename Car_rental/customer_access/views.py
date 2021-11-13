@@ -145,13 +145,29 @@ class customer_view():
         else:
             return HttpResponse('METHOD NOT ALLOWED')
 
+    @csrf_exempt
     def reservation(request):
         if request.method == 'GET':
             if request.session.has_key('phoneno'):
+                try:
+                    conn = psycopg2.connect("dbname='trial_db' user='postgres' host='localhost' password='trial@123'")
+                    cur = conn.cursor()
+                except:
+                    print("Unable to connect to the database")
+                    return HttpResponse("Unable to connect to the database")
 
                 #phoneno = request.session['phoneno']
                 #context = {'phoneno' : phoneno}
-                context = {}
+                query = "SELECT name,location FROM outlet"
+                cur.execute(query)
+                rows = cur.fetchall()
+
+                rows = [i[0] +', '+ i[1] for i in rows]
+                context = {'outlets' : rows}
+
+                cur.close()
+                conn.close()
+
                 return render(request,'reservation.html',context)
             else:
                 #context = {'error' : 'Sign In Please'}
@@ -174,7 +190,17 @@ class customer_view():
             outlet_name = fields[2].split('=')[1]
 
             if(v_t_d and e_r_d and outlet_name):
-                print("U gave values")
+                print(v_t_d)
+                print(e_r_d)
+                print(outlet_name)
+                cur.close()
+                conn.close()
+                return HttpResponse("U gave values")
+
+            else:
+                cur.close()
+                conn.close()
+                return HttpResponse("fields not submitted properly")
             #print(f"Username --> {username} and Password --> {password} and Phoneno --> {phoneno}")
 
         else:
