@@ -6,17 +6,20 @@
 <body>    
     <h2>Vehicle Choices</h2><br>    
     <div class="reservation">    
-    <form id="reservation" method="POST" action="/">    
+    <form id="reservation" action="/vehicle_submission/" method="POST">    
         <label>vehicle taken date</label>
-            <input type="text" value="{{v_t_d}}" readonly>
+            <input type="text" name="v_t_d" value="{{v_t_d}}" readonly>
         <br><br>
         <label>Expected return date</label>
-            <input type="text" value="{{e_t_d}}" readonly>
+            <input type="text" name="e_r_d" value="{{e_r_d}}" readonly>
+        <br><br>
+        <label>Outlet Chosen</label>
+            <input type="text" name="outlet" value="{{outlet_name}}" readonly>
         <br><br>
         <label><b>Vehicles</b></label>
         <br>
         {% for vehicle in vehicle_list %}
-            <input type="radio" id="{{vehicle}}" name="{{vehicle}}" value="{{vehicle}}">
+            <input type="radio" id="{{vehicle}}" name="plate-no" value="{{vehicle}}">
             <label for={{vehicle}}>{{vehicle}}</label><br>
         {% endfor %}
             

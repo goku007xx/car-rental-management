@@ -21,6 +21,8 @@ class Outlet(models.Model):
 class Employee(models.Model):
 	employee_id = models.AutoField(primary_key = True)
 	employee_name = models.CharField(max_length = 25)
+	employee_password = models.CharField(max_length = 25)
+	employee_phone_no = models.CharField(unique=True,max_length=10)
 
 	outlet = models.ForeignKey(Outlet,on_delete=models.PROTECT)
 

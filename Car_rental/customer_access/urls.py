@@ -10,7 +10,8 @@ urlpatterns = [
     path('logout/', authentication.logout, name='logout'),
     path('testing/' , authentication.testing , name = 'testing'),
     path('home/', customer_view.home, name = 'home'),
-    path('reservation/' , customer_view.reservation, name = 'reservation')
+    path('reservation/' , customer_view.reservation, name = 'reservation'),
+    path('vehicle_submission/' , customer_view.vehicle_submission, name = 'vehicle_submission'),
+    path('view_reservations/' , customer_view.view_reservations , name = 'view_reservations')
     #path('vehicle/' , customer_view.vehicle, name = 'vehicle')
-    #url(r'^vehicle/$', customer_view.vehicle, name='vehicle')
 ]
