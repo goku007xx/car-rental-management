@@ -21,7 +21,10 @@
             <li>reservation status:{{ res.3 }}</li>
             <li>plate number:{{ res.4 }}</li>
             <br>
-            <button onclick="setGetParameter(this.id)" id="{{ res.5 }}">Cancel Reservation</button>
+            <button onclick="setCancel(this.id)" id="{{ res.5 }}">Cancel Reservation</button>
+            <br>
+            <br>
+            <button onclick="setApprove(this.id)" id="{{ res.5 }}~">Approve Reservation</button>
         </ul>
         <br>
         {% empty %}
@@ -39,7 +42,7 @@
 
      <script>
 
-        function setGetParameter(rid){
+        function setCancel(rid){
             
             let data = {id: rid};
 
@@ -51,8 +54,24 @@
             console.log("Request complete! response:", res);
             window.location.href = '/employee/home/';
             });
-
         }
+
+        function setApprove(rid){
+            // rid= String(rid);
+            let data = {id: rid.substring(0,rid.length-1)};
+
+            console.log('data to be sent: ',rid);
+
+            fetch("/employee/approve_reservation/", {
+                method: "POST",
+                headers: {'Content-Type': 'application/json'} ,
+                body: JSON.stringify(data)
+            }).then(res => {
+            console.log("Request complete! response:", res);
+            window.location.href = '/employee/home/';
+            });
+        }
+
     </script>
     
 </body>

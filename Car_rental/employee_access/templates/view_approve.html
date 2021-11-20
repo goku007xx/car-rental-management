@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3> Hello {{phoneno}} </h3>
+    <h4>Return Page</h2><br>  
+    
+    
+    {% for res in rents %}
+    <!-- bill_id , taken_date , return_date  , total_amt , refund , customer_id , plt_no_id , reservation_id -->
+        <h5>customer_id: {{ res.5 }}</h5>
+        <ul id="{{ res.0}}">
+            <li><strong>bill id: {{ res.0 }}</strong></li>
+            <li><strong>reservation id: {{ res.7 }}</strong></li>           <!-- so customer can cross check incase of quarel -->
+            <li>vehicle taken date:{{ res.1 }}</li>
+            <li>expected return date:{{ res.2 }}</li>
+            <li>plate number:{{ res.6 }}</li>
+            <li>refund creditable: {{ res.4 }}</li>
+            <li><strong>total amount: {{ res.3 }}</strong></li>
+            <br>
+            <!-- FORM TO edit returned date, to add penulty -->
+            <button onclick="setUpdate()" id="{{ res.5 }}">update rent</button>
+            <br>
+            <br>
+            <!-- PAY BILL TATA BYE BYE -->
+            <button onclick="setFinal()" id="{{ res.5 }}~">customer payment</button>
+        </ul>
+        <br>
+        {% empty %}
+        <h5>No desk work today, pls go service the car</h5>
+    {% endfor %}
+<!-- 
+    {% for location, rating, images in list_of_lists %}
+
+...
+<img>{{ images.0 }}</img>
+...
+
+{% endfor %}
+     -->
+
+     <script>
+
+        function setCancel(rid){
+            
+            let data = {id: rid};
+
+            fetch("/employee/update_rent/", {
+                method: "POST",
+                headers: {'Content-Type': 'application/json'} ,
+                body: JSON.stringify(data)
+            }).then(res => {
+            console.log("Request complete! response:", res);
+            window.location.href = '/employee/home/';
+            });
+        }
+
+        function setApprove(rid){
+            
+            let data = {id: rid.substring(0,rid.length-1)};
+
+            console.log('data to be sent: '+data);
+
+
+            fetch("/employee/final_bill/", {
+                method: "POST",
+                headers: {'Content-Type': 'application/json'} ,
+                body: JSON.stringify(data)
+            }).then(res => {
+            console.log("Request complete! response:", res);
+            window.location.href = '/employee/home/';
+            });
+        }
+
+    </script>
+    
+</body>
+</html>
