@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt    # CSRF Token Ignore in post reqs
 from django.shortcuts import redirect
 from django.urls import reverse
+#from django.contrib import messages
 import json
 import psycopg2
 import random
@@ -20,7 +21,7 @@ class authentication():
             #form = Signup_form()
             #context = {'form' : form}
             context = {}
-            return render(request,'signup.html',context)
+            return render(request,'customer_access/signup.html',context)
 
         elif request.method == 'POST':
             try:
@@ -59,11 +60,14 @@ class authentication():
                 conn.commit()
                 cur.close()
                 conn.close()
-                return HttpResponse("Inserted Successfully")
+                #messages.success(request,"User signed up Successfully")
+                #return HttpResponse("Inserted Successfully")
+                return redirect('/signin/')
             else:
                 cur.close()
                 conn.close()
-                return HttpResponse("Fields not submitted properly")
+                messages.error(request, "Fields not set properly")
+                return redirect('/signup/')
             
         else:
             return HttpResponse("METHOD NOT ALLOWED")
@@ -75,12 +79,13 @@ class authentication():
 
                 phoneno = request.session['phoneno']
                 context = {'phoneno' : phoneno}
-                return render(request,'home.html',context)
+                #return render(request,'customer_access/home.html',context)
+                return redirect('/home/')
 
             else:
                 print("Here")
                 print(kwargs)
-                return render(request,'signin.html',kwargs)
+                return render(request,'customer_access/signin.html',kwargs)
 
         elif request.method == 'POST':
             try:
@@ -135,10 +140,21 @@ class customer_view():
         if request.method == 'GET':
             if request.session.has_key('phoneno'):
 
-                phoneno = request.session['phoneno']
-                context = {'phoneno' : phoneno}
+                try:
+                    conn = psycopg2.connect("dbname='trial_db' user='postgres' host='localhost' password='trial@123'")
+                    cur = conn.cursor()
+                except:
+                    print("Unable to connect to the database")
+                    return HttpResponse("Unable to connect to the database")
 
-                return render(request,'home.html',context)
+                phoneno = request.session['phoneno']
+                cur.execute(f"select username from customer where phone_no='{phoneno}'")
+                username = cur.fetchone()[0]
+                print(username)
+
+                context = {'phoneno' : phoneno , 'username' : username}
+
+                return render(request,'customer_access/home.html',context)
             else:
                 #context = {'error' : 'Sign In Please'}
                 return redirect('/signin/')
@@ -183,7 +199,11 @@ class customer_view():
                 cur.close()
                 conn.close()
 
-                return render(request,'reservation.html',context)
+                response = render(request,'customer_access/reservation.html',context)
+                #response["Cache-Control"] = "private, no-store, max-age=0, no-cache, must-revalidate, post-check=0, pre-check=0"
+                #response["Pragma"] = "no-cache" 
+                #response["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
+                return response
             else:
                 #context = {'error' : 'Sign In Please'}
                 #text = 'You must be signed in'
@@ -228,7 +248,7 @@ class customer_view():
                     cur.close()
                     conn.close()
                     context = {'vehicle_list' : rows , 'v_t_d' : v_t_d , 'e_r_d' : e_r_d , 'outlet_name' : outlet}
-                    return render(request,'vehicle.html',context = context)
+                    return render(request,'customer_access/vehicle.html',context = context)
                     
                     #return HttpResponse("U gave values")
 
@@ -319,7 +339,7 @@ class customer_view():
 
                 context = {'phoneno':phoneno , 'reservations' : rows}
 
-                return render(request,'view_reservations.html',context = context)
+                return render(request,'customer_access/view_reservations.html',context = context)
 
             else:
                 return HttpResponse("Sign in pls :(")

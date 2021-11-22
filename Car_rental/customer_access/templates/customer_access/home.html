@@ -1,0 +1,25 @@
+{% load static %}
+
+<p>Car Rental Management</p>
+
+<head>
+    <title>Car Rental Management</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'customer_access/inside.css' %}">
+
+</head>
+
+{% block content %}
+<p id="helloname"> Hello {{username}} </p>
+<div class="container">
+
+    <div id="inhome">
+        <button id="b1" onclick="window.location.href='/reservation'">Make a Reservation</button>
+        <button id="b2" onclick="window.location.href='/view_reservations'">View Reservation</button>
+    </div>
+
+</div>
+
+
+
+
+{% endblock %}

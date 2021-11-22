@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    <h3> Hello {{phoneno}} </h3>
+    <h3> Hello {{empname}} </h3>
     <h4>Reservation Page</h2><br>  
     
     
@@ -18,8 +18,8 @@
             <li>reservation date:{{ res.0 }}</li>
             <li>vehicle taken date:{{ res.1 }}</li>
             <li>expected return date:{{ res.2 }}</li>
-            <li>reservation status:{{ res.3 }}</li>
-            <li>plate number:{{ res.4 }}</li>
+            <li>reservation status:In progress</li>
+            <li>plate number:{{ res.3 }}</li>
             <br>
             <button onclick="setCancel(this.id)" id="{{ res.5 }}">Cancel Reservation</button>
             <br>
@@ -61,7 +61,7 @@
             let data = {id: rid.substring(0,rid.length-1)};
 
             console.log('data to be sent: ',rid);
-
+            
             fetch("/employee/approve_reservation/", {
                 method: "POST",
                 headers: {'Content-Type': 'application/json'} ,
@@ -70,6 +70,7 @@
             console.log("Request complete! response:", res);
             window.location.href = '/employee/home/';
             });
+            
         }
 
     </script>

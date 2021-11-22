@@ -1,0 +1,39 @@
+{% load static %}
+
+<!DOCTYPE html>    
+<html>    
+<head>    
+    <title>Signin Form</title>     
+    <link rel="stylesheet" type="text/css" href="{% static 'customer_access/styles.css' %}">
+    
+</head>    
+<body>    
+    
+    <p id="signupname">Signin</p><br>    
+    <div class="signup" id="signupdiv">
+    {% block error %}
+        <p>{{error}}</p>  
+    {% endblock %}
+
+    {% for message in messages %}
+    <li class="{{ message.tags }}">
+    {% if 'safe' in message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}
+    </li>
+{% endfor %}
+        
+    <form id="signup" method="POST" action="">    
+        <label><b>PhoneNo    
+        </b>    
+        </label>    
+        <input type="text" name="Phoneno" id="Phoneno" placeholder="Phoneno">    
+        <br><br>
+        <label><b>Password     
+        </b>    
+        </label>    
+        <input type="Password" name="Pass" id="Pass" placeholder="Password">    
+        <br><br>            
+        <input type="submit" name="log" id="log" value="submit">          
+    </form>     
+</div>    
+</body>    
+</html>  

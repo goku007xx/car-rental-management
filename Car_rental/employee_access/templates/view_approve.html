@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    <h3> Hello {{phoneno}} </h3>
+    <h3> Hello {{empname}} </h3>
     <h4>Return Page</h2><br>  
     
     
@@ -24,11 +24,11 @@
             <li><strong>total amount: {{ res.3 }}</strong></li>
             <br>
             <!-- FORM TO edit returned date, to add penulty -->
-            <button onclick="setUpdate()" id="{{ res.5 }}">update rent</button>
+            <button onclick="setUpdate(this.id)" id="{{ res.0 }}">update rent</button>
             <br>
             <br>
             <!-- PAY BILL TATA BYE BYE -->
-            <button onclick="setFinal()" id="{{ res.5 }}~">customer payment</button>
+            <button onclick="setFinal(this.id)" id="{{ res.0 }}">customer payment</button>
         </ul>
         <br>
         {% empty %}
@@ -46,35 +46,28 @@
 
      <script>
 
-        function setCancel(rid){
+        function setFinal(bid){
             
-            let data = {id: rid};
-
-            fetch("/employee/update_rent/", {
-                method: "POST",
-                headers: {'Content-Type': 'application/json'} ,
-                body: JSON.stringify(data)
-            }).then(res => {
-            console.log("Request complete! response:", res);
-            window.location.href = '/employee/home/';
-            });
+            window.location.href = '/employee/payment?bid='+bid
         }
 
-        function setApprove(rid){
+        function setUpdate(bid){
             
-            let data = {id: rid.substring(0,rid.length-1)};
+            let data = {id: bid};
 
-            console.log('data to be sent: '+data);
+            window.location.href = '/employee/update_rent_later?bid='+bid
 
-
-            fetch("/employee/final_bill/", {
+            /*
+            fetch("/employee/update_rent_later/", {
                 method: "POST",
                 headers: {'Content-Type': 'application/json'} ,
-                body: JSON.stringify(data)
+                body: JSON.stringify(data),
+                redirect: 'follow'
             }).then(res => {
             console.log("Request complete! response:", res);
-            window.location.href = '/employee/home/';
+            //window.location.href = '/employee/home/';
             });
+            */
         }
 
     </script>

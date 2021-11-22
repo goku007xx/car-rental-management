@@ -11,6 +11,7 @@ urlpatterns = [
     path('view_res/' , employee_view.view_res , name = 'view_res'),
     path('cancel_reservation/', employee_view.cancel_reservation, name='cancel_reservation'),
     path('approve_reservation/', employee_view.approve_reservation, name='approve_reservation'),
-    path('view_approve/',employee_view.view_approve, name ='view_approve')
-    #path('vehicle/' , customer_view.vehicle, name = 'vehicle')
+    path('view_approve/',employee_view.view_approve, name ='view_approve'),
+    path('update_rent_later/',employee_view.update_rent_later , name = 'update_rent_later'),
+    path('payment/' , employee_view.payment, name = 'payment')
 ]

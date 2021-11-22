@@ -91,7 +91,14 @@ class employee_view():
                 
                 phoneno = request.session['emp_phoneno']
 
-                context={"phoneno":phoneno}
+                query = f"SELECT employee_name FROM employee where employee_phone_no ='{phoneno}'"
+                #print(query)
+                cur.execute(query)
+                row = cur.fetchone()
+
+                emp_name = row[0]
+
+                context={"empname":emp_name}
                         #"reservations":rows
                     #request.session.set_expiry(300)
                 
@@ -125,7 +132,7 @@ class employee_view():
             row = cur.fetchone()
 
             emp_id = row[0]
-
+            emp_name = row[1]
                 
             print("emp:",row)
             query = f"SELECT reservation_date,vehicle_taken_date,expected_return_date,plt_no_id,customer_id,reservation_id from reservation where emp_id = '{emp_id}' and reservation_status='inprogress'"
@@ -133,7 +140,7 @@ class employee_view():
             rows = cur.fetchall()
             print(rows)
 
-            context = {'phoneno' : phoneno , 'reservations' : rows}
+            context = {'empname' : emp_name , 'reservations' : rows}
 
             return render(request,'view_res.html',context = context)
         else:
@@ -174,7 +181,7 @@ class employee_view():
 
             rents =[] 
             for res_id in rows:
-                query = f"SELECT bill_id , taken_date , return_date  , total_amt , refund , customer_id , plt_no_id , reservation_id from rent where reservation_id={res_id}"
+                query = f"SELECT bill_id , taken_date , return_date  , total_amt , refund , customer_id , plt_no_id , reservation_id from rent where reservation_id='{res_id}'"
                 cur.execute(query)
                 rent_row = cur.fetchone()
                 print(rent_row)
@@ -183,10 +190,17 @@ class employee_view():
             print(rents)
             print("HereVie3")
 
+            query = f"SELECT employee_name FROM employee where employee_phone_no ='{phoneno}'"
+            #print(query)
+            cur.execute(query)
+            row = cur.fetchone()
+
+            emp_name = row[0]
+
             conn.close()
 
             print(rents)
-            context = {'phoneno' : phoneno , 'rents' : rents}
+            context = {'empname' : emp_name , 'rents' : rents}
             
             return render(request,'view_approve.html',context = context)
         else:
@@ -299,7 +313,9 @@ class employee_view():
                 
                 # CAN query model type and AC/no AC and do if else for base amount (WHICH GURU KIRAN WILL DO(MUST DO!))
                 amt = 1000
-                cur.execute(rent_insert_query,(v_t_d.strftime('%d-%m-%Y'), e_r_d.strftime('%d-%m-%Y'), num_days , 200, num_days*amt ,refund,cust_id,plate_no,res_id))
+                tax = 200
+                total = (num_days*amt)+tax
+                cur.execute(rent_insert_query,(v_t_d.strftime('%Y-%m-%d'), e_r_d.strftime('%Y-%m-%d'), num_days , 200, total ,refund,cust_id,plate_no,res_id))
                 conn.commit()
                 conn.close()
 
@@ -311,3 +327,182 @@ class employee_view():
                 return redirect('/employee/signin/')
         else:
             return HttpResponse("METHOD NOT ALLOWED")
+
+    @csrf_exempt
+    def update_rent_later(request):
+        if request.method =='GET':
+            if request.session.has_key('emp_phoneno'):
+
+                try:
+                    conn = psycopg2.connect("dbname='trial_db' user='postgres' host='localhost' password='trial@123'")
+                    cur = conn.cursor()
+                except:
+                    print("Unable to connect to the database")
+                    return HttpResponse("Unable to connect to the database")
+
+                bid = request.GET.get('bid', '')
+                phoneno = request.session['emp_phoneno']
+
+                query = f"select * from rent where bill_id = '{bid}'"
+                cur.execute(query)
+                rows = cur.fetchall()
+                if(rows is None):
+                    print("Invalid BID")
+                    return redirect('/employee/view_approve')
+
+                print("here")
+                if(bid):
+                    context = {'bill_id' : bid}
+                    return render(request,'update_rent_form.html',context = context)
+                else:
+                    return HttpResponse("INVALID REQUEST")
+
+            else:
+                return HttpResponse("Sign in first")
+
+        elif request.method == 'POST':
+            if request.session.has_key('emp_phoneno'):
+                try:
+                    conn = psycopg2.connect("dbname='trial_db' user='postgres' host='localhost' password='trial@123'")
+                    cur = conn.cursor()
+                except:
+                    print("Unable to connect to the database")
+                    return HttpResponse("Unable to connect to the database")
+
+                form_string = request.body.decode('utf-8')
+                fields = form_string.split('&')
+                bid = fields[0].split('=')[1]
+                ret_date = fields[1].split('=')[1]
+
+                query_update = f"update rent set return_date='{ret_date}' where bill_id='{bid}';"
+                cur.execute(query_update)
+                conn.commit()
+
+                query_select = f"select bill_id , taken_date , return_date , no_of_days , tax_amt , total_amt , refund , customer_id , plt_no_id  , reservation_id from rent where bill_id='{bid}'"
+                cur.execute(query_select)
+                row = cur.fetchone()
+
+                amt_per_day = 1000
+
+                t_d = row[1]
+                r_d = row[2]
+                tax = row[4]
+                num_days = (r_d - t_d).days
+                total_amt = (num_days * amt_per_day) + tax
+
+                query_update = f"update rent set no_of_days='{num_days}' , total_amt = '{total_amt}' where bill_id = '{bid}'"
+                cur.execute(query_update)
+                conn.commit()
+
+                cur.close()
+                conn.close()
+
+                response = redirect('/employee/view_approve/')
+                return response
+
+            else:
+                return HttpResponse("Pls Sign in")
+
+        else:
+            return HttpResponse("METHOD NOT ALLOWED")
+
+
+    @csrf_exempt
+    def payment(request):
+        if request.method =='GET':
+            if request.session.has_key('emp_phoneno'):
+                try:
+                    conn = psycopg2.connect("dbname='trial_db' user='postgres' host='localhost' password='trial@123'")
+                    cur = conn.cursor()
+                except:
+                    print("Unable to connect to the database")
+                    return HttpResponse("Unable to connect to the database")
+
+                bid = request.GET.get('bid', '')
+                phoneno = request.session['emp_phoneno']
+
+                query = f"select * from rent where bill_id = '{bid}'"
+                cur.execute(query)
+                rows = cur.fetchall()
+                if(rows is None):
+                    print("Invalid BID")
+                    return redirect('/employee/view_approve')
+
+                if(bid):
+                    context = {'bill_id' : bid}
+                    return render(request,'payment.html',context = context)
+                else:
+                    return HttpResponse("INVALID REQUEST")
+                    
+            else:
+                return HttpResponse("Sign in first")
+
+        elif request.method == 'POST':
+            if request.session.has_key('emp_phoneno'):
+                try:
+                    conn = psycopg2.connect("dbname='trial_db' user='postgres' host='localhost' password='trial@123'")
+                    cur = conn.cursor()
+                except:
+                    print("Unable to connect to the database")
+                    return HttpResponse("Unable to connect to the database")
+
+                form_string = request.body.decode('utf-8')
+                fields = form_string.split('&')
+                bid = fields[0].split('=')[1]
+                cash = fields[1].split('=')[1]
+
+                query = f"select total_amt from rent where bill_id = '{bid}'"
+                cur.execute(query)
+                amt_to_be_paid = cur.fetchone()[0]
+                print(amt_to_be_paid)
+
+                if(amt_to_be_paid > int(cash)):
+                    print("Less cash u have")
+                    return redirect('/employee/view_approve/')
+
+                if(amt_to_be_paid != int(cash)):
+                    print("Too much cash u have")
+                    return redirect('/employee/view_approve/')
+
+                query = f"select reservation_id from rent where bill_id = '{bid}'"
+                cur.execute(query)
+                res_id = cur.fetchone()[0]
+                print(res_id)
+
+                query = f"update reservation set reservation_status = 'completed' where reservation_id = '{res_id}'"
+                cur.execute(query)
+                conn.commit()
+                print("Changed reservation to completed")
+
+                query = f"select outlet_id from reservation where reservation_id = '{res_id}'"
+                cur.execute(query)
+                outlet_id = cur.fetchone()[0]
+                print(outlet_id)
+
+                query = f"select plt_no_id from reservation where reservation_id = '{res_id}'"
+                cur.execute(query)
+                plt_no = cur.fetchone()[0]
+                print(plt_no)
+
+                query = f"update vehicle set vehicle_status = 'not-taken' where plate_number = '{plt_no}'"
+                cur.execute(query)
+                conn.commit()
+                print("Changed Vehicle status to not taken")
+
+                query = f"update outlet set outlet_savings = outlet_savings + '{cash}' where outlet_id = '{outlet_id}'"
+                cur.execute(query)
+                conn.commit()
+                print("Updated outlet savings")
+
+                cur.close()
+                conn.close()
+
+                response = redirect('/employee/home/')
+                return response
+
+            else:
+                return HttpResponse("Pls Sign in")
+
+        else:
+            return HttpResponse("METHOD NOT ALLOWED")
+

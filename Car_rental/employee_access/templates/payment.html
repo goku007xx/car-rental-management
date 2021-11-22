@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Payment form</title>
+</head>
+<body>
+	<h2>PAYMENT</h2><br>    
+    <div class="payment">
+	<form id="pay" method="POST">    
+        <label>BILL ID</label>
+            <input type="text" name="bid" value="{{bill_id}}" readonly>
+        <br><br>
+        <label>Amount</label>
+            <input type="text" name="cash" placeholder="Enter Amount">
+        <br><br>  
+        <input type="submit" name="log" id="log" value="submit">          
+    </form>
+</body>
+</html>
