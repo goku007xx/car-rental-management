@@ -1,25 +1,78 @@
 {% load static %}
 
-<p>Car Rental Management</p>
+
 
 <head>
     <title>Car Rental Management</title>
     <link rel="stylesheet" type="text/css" href="{% static 'customer_access/inside.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
 </head>
 
-{% block content %}
-<p id="helloname"> Hello {{username}} </p>
-<div class="container">
+<body class="fullback">
 
-    <div id="inhome">
-        <button id="b1" onclick="window.location.href='/reservation'">Make a Reservation</button>
-        <button id="b2" onclick="window.location.href='/view_reservations'">View Reservation</button>
+    <div class="bg">
+
+        <div class="back">
+            <br><br>
+
+            <div class="container">
+                <div class="name">
+                    <p>Car Rental Management</p>
+                </div>
+
+
+                {% block content %}
+                <br><br><br><br>
+
+                <p> Hello {{username}} </p>
+
+                {% if messages %}
+                {% for message in messages %}
+                <div class="container-fluid p-0">
+                    <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                        {{ message }}
+                    </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+
+                <div class="container">
+                    <br><br><br>
+
+                    <div id="inhome">
+                        <span>
+                            <button style="width: 300px;height: 50px;font-size: 18px;
+                            
+                            font-weight: 700;
+                            cursor: pointer;
+                            outline: none;" type="button" class="btn btn-secondary" id="b1"
+                                onclick="window.location.href='/reservation'">Make Reservation</button>
+                        </span>
+                        <span>
+                            <button style="width: 300px;height: 50px;font-size: 18px;
+                            
+                            font-weight: 700;
+                            cursor: pointer;
+                            outline: none;" type="button" class="btn btn-secondary" id="b2"
+                                onclick="window.location.href='/view_reservations'">View Reservation</button>
+                        </span>
+
+
+                    </div>
+
+                </div>
+
+
+                {% endblock %}
+
+            </div>
+
+        </div>
+
+
+
     </div>
 
-</div>
 
-
-
-
-{% endblock %}
+</body>

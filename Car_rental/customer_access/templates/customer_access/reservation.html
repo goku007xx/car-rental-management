@@ -1,38 +1,74 @@
-<!DOCTYPE html>    
-<html>    
-<head>    
-    <title>Reservation Form</title>       
-</head>    
-<body onunload="">
+{% load static %}
 
-    <h2>Reservation Page</h2><br>    
-    <div class="reservation">    
-    <form id="reservation" method="POST" action="">    
-        <label><b>Vehicle Taking Date    
-        </b>    
-        </label>    
-        <input type="text" name="Veh_take_date" id="Veh_take_date" placeholder="Taking Date">    
-        <br><br>    
-        <label><b>Expected Return Date     
-        </b>    
-        </label>    
-        <input type="text" name="exp_ret_date" id="exp_ret_date" placeholder="Return Date">    
-        <br><br>  
-        <label><b>Outlet    
-        </b>    
-        </label>
-        <select id="outlet" name="outlet">
-            <option value="none" selected disabled hidden>
-                Select an option
-            </option>
-            {% for outlet in outlets %}
-            <option value="{{outlet}}"> {{outlet}} </option>
-            {% endfor %}
-        </select>      
-        <br><br>  
-        <input type="submit" name="log" id="log" value="submit">       
-    </form>     
-</div>    
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Reservation Form</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'customer_access/reserve.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <div class="inreservation">
+
+
+
+        <p>Reservation Page</p><br>
+
+        {% if messages %}
+        {% for message in messages %}
+        <div class="container-fluid p-0">
+            <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                {{ message }}
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+        <div class="reservation">
+            <form id="reservation" method="POST" action="">
+                <label><b>Vehicle Taking Date (YYYY-MM-DD)
+                    </b>
+                </label>
+                <!-- <input type="text" name="Veh_take_date" id="Veh_take_date" placeholder="Taking Date">    -->
+                <!-- <input type="date" id="Veh_take_date" name="Veh_take_date">  -->
+
+                <input type="text" name="Veh_take_date" id="Veh_take_date" ,placeholder="YYYY-MM-DD" required
+                    pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" title="Enter a date in this formart YYYY-MM-DD" />
+                <br><br>
+                <label><b>Expected Return Date (YYYY-MM-DD)
+                    </b>
+                </label>
+                <!-- <input type="text" name="exp_ret_date" id="exp_ret_date" placeholder="Return Date">     -->
+                <input type="text" name="exp_ret_date" id="exp_ret_date" ,placeholder="YYYY-MM-DD" required
+                    pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" title="Enter a date in this formart YYYY-MM-DD" />
+
+                <br><br>
+                <label><b>Outlet :
+                    </b>
+                </label>
+                <select id="outlet" name="outlet" style="width: fit-content;height: 40px;padding: 0 5px;">
+                    <option value="none" selected disabled hidden>
+                        Select an Outlet
+                    </option>
+                    {% for outlet in outlets %}
+                    <option value="{{outlet}}" style="width: fit-content;height: 40px;padding: 0 5px;"> {{outlet}}
+                    </option>
+                    {% endfor %}
+                </select>
+                <br><br>
+                <input type="submit" name="log" id="log" value="Next" style="width: 300px;height: 50px;font-size: 18px;
+                color:  #3999dd;
+                font-weight: 700;
+                cursor: pointer;
+                outline: none;">
+            </form>
+        </div>
+
+    </div>
+
+
 </body>
-  
-</html>  
+
+</html>

@@ -3,10 +3,12 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt    # CSRF Token Ignore in post reqs
 from django.shortcuts import redirect
 from django.urls import reverse
-#from django.contrib import messages
+from django.contrib import messages
+from django.http import HttpResponseRedirect
 import json
 import psycopg2
 import random
+from datetime import datetime as dt
 
 class authentication():
 
@@ -25,7 +27,7 @@ class authentication():
 
         elif request.method == 'POST':
             try:
-                conn = psycopg2.connect("dbname='trial_db' user='postgres' host='localhost' password='trial@123'")
+                conn = psycopg2.connect("dbname='trial_db' user='customer' host='localhost' password='123'")
                 cur = conn.cursor()
             except:
                 print("Unable to connect to the database")
@@ -34,9 +36,9 @@ class authentication():
             
             form_string = request.body.decode('utf-8')
             fields = form_string.split('&')
-            username = fields[0].split('=')[1]
-            password = fields[1].split('=')[1]
-            phoneno = fields[2].split('=')[1]
+            username = fields[0].split('=')[1]  # MISS1
+            phoneno = fields[1].split('=')[1]
+            password = fields[2].split('=')[1]
             print(f"Username --> {username} and Password --> {password} and Phoneno --> {phoneno}")
             
             '''
@@ -54,7 +56,11 @@ class authentication():
 
                 if row is not None:
                     print(row)
-                    return HttpResponse("User already exists with same Phone no")
+                    #return HttpResponse("User already exists with same Phone no")
+                    #return HttpResponse("<script>alert('User already exists with same Phone no')\
+                    #;window.location = '/signup/' ;</script>")
+                    messages.error(request, 'User already exist!! please Signin')   # MISS1
+                    return HttpResponseRedirect('/signin')
 
                 cur.execute("""INSERT INTO customer (username,password,phone_no) VALUES (%s,%s,%s);""",(username,password,phoneno,))
                 conn.commit()
@@ -62,12 +68,15 @@ class authentication():
                 conn.close()
                 #messages.success(request,"User signed up Successfully")
                 #return HttpResponse("Inserted Successfully")
+                messages.success(request,'Account created, signin to continue')     # MISS1
                 return redirect('/signin/')
             else:
                 cur.close()
                 conn.close()
-                messages.error(request, "Fields not set properly")
-                return redirect('/signup/')
+                #messages.error(request, "Fields not set properly")
+                return HttpResponse("<script>alert('Fields not set properly')\
+                    ;window.location = '/signup/' ;</script>")
+                #return redirect('/signup/')
             
         else:
             return HttpResponse("METHOD NOT ALLOWED")
@@ -89,7 +98,7 @@ class authentication():
 
         elif request.method == 'POST':
             try:
-                conn = psycopg2.connect("dbname='trial_db' user='postgres' host='localhost' password='trial@123'")
+                conn = psycopg2.connect("dbname='trial_db' user='customer' host='localhost' password='123'")
                 cur = conn.cursor()
             except:
                 print("Unable to connect to the database")
@@ -116,11 +125,14 @@ class authentication():
     
                 cur.close()
                 conn.close()
-                return HttpResponse("Wrong username or password")
+                #return HttpResponse("Wrong username or password")
+                return HttpResponse("<script>alert('Wrong username or password')\
+                    ;window.location = '/signin/' ;</script>")
             else:
                 cur.close()
                 conn.close()
-                return HttpResponse("Fields not submitted properly")
+                return HttpResponse("<script>alert('Fields not submitted correctly')\
+                    ;window.location = '/signin/' ;</script>")
 
         else:
             return HttpResponse("METHOD NOT ALLOWED")
@@ -128,7 +140,11 @@ class authentication():
     def logout(request):
         try:
             del request.session['phoneno']
-            return HttpResponse("<strong>Logged out Successfully.</strong>")
+            #return HttpResponse("<strong>Logged out Successfully.</strong>")
+            #return HttpResponse("<script>alert('Logged out Successfully.')\
+            #       ;window.location = '/signin/' ;</script>")
+            messages.info(request,"Logged out successfully")
+            return redirect('/signin/')             #MISS1
         except:
             print("Logout not Work!!!")
             return HttpResponse("<strong>Failure in Logging out.</strong>")
@@ -141,7 +157,7 @@ class customer_view():
             if request.session.has_key('phoneno'):
 
                 try:
-                    conn = psycopg2.connect("dbname='trial_db' user='postgres' host='localhost' password='trial@123'")
+                    conn = psycopg2.connect("dbname='trial_db' user='customer' host='localhost' password='123'")
                     cur = conn.cursor()
                 except:
                     print("Unable to connect to the database")
@@ -168,7 +184,7 @@ class customer_view():
         if request.method == 'GET':
             if request.session.has_key('phoneno'):
                 try:
-                    conn = psycopg2.connect("dbname='trial_db' user='postgres' host='localhost' password='trial@123'")
+                    conn = psycopg2.connect("dbname='trial_db' user='customer' host='localhost' password='123'")
                     cur = conn.cursor()
                 except:
                     print("Unable to connect to the database")
@@ -187,7 +203,10 @@ class customer_view():
                 rows = cur.fetchall()
                 print(rows)
                 if(len(rows) >= 3):
-                    return HttpResponse("Not allowed to have more than 3")
+                    #return HttpResponse("<script>alert('Not allowed to have more than 3 reservations')\
+                    #;window.location = '/home/' ;</script>")
+                    messages.warning(request,"Not allowed to make more than 3 reservation")
+                    return HttpResponseRedirect("/home")
 
                 query = "SELECT name,location FROM outlet"
                 cur.execute(query)
@@ -212,7 +231,7 @@ class customer_view():
         elif request.method == 'POST':
             if request.session.has_key('phoneno'):
                 try:
-                    conn = psycopg2.connect("dbname='trial_db' user='postgres' host='localhost' password='trial@123'")
+                    conn = psycopg2.connect("dbname='trial_db' user='customer' host='localhost' password='123'")
                     cur = conn.cursor()
                 except:
                     print("Unable to connect to the database")
@@ -255,7 +274,8 @@ class customer_view():
                 else:
                     cur.close()
                     conn.close()
-                    return HttpResponse("fields not submitted properly")
+                    return HttpResponse("<script>alert('Fields not submitted correctly')\
+                    ;window.location = '/signin/' ;</script>")
                 #print(f"Username --> {username} and Password --> {password} and Phoneno --> {phoneno}")
 
             else:
@@ -266,7 +286,7 @@ class customer_view():
         if request.method == 'POST':
             if request.session.has_key('phoneno'):
                 try:
-                    conn = psycopg2.connect("dbname='trial_db' user='postgres' host='localhost' password='trial@123'")
+                    conn = psycopg2.connect("dbname='trial_db' user='customer' host='localhost' password='123'")
                     cur = conn.cursor()
                 except:
                     print("Unable to connect to the database")
@@ -276,7 +296,7 @@ class customer_view():
                 e_r_d = request.POST.get('e_r_d')
                 plate_no = request.POST.get('plate-no')
                 outlet = request.POST.get('outlet')
-                reservation_date = '2001-12-20'     # Should be date/time of taking reservation
+                reservation_date = dt.now().strftime('%Y-%m-%d')     # Should be date/time of taking reservation
                 reservation_status = 'inprogress'
                 advance = 1000
 
@@ -305,10 +325,14 @@ class customer_view():
 
                 cur.close()
                 conn.close()
-                return HttpResponse("Inserted reservation success :)")
+                messages.info(request, 'Reservation Successful!! check your reservation status in view reservation')
+                return HttpResponseRedirect('/home')    #MISS1
+                #return HttpResponse("<script>alert('Successfully made reservation')\
+                #   ;window.location = '/home/' ;</script>")
 
             else:
-                return HttpResponse("Sign in pls :(")
+                return HttpResponse("<script>alert('Please signin first')\
+                    ;window.location = '/signin/' ;</script>")
 
         else:   
             return HttpResponse("METHOD NOT ALLOWED")
@@ -318,15 +342,17 @@ class customer_view():
         if request.method == 'GET':
             if request.session.has_key('phoneno'):
                 try:
-                    conn = psycopg2.connect("dbname='trial_db' user='postgres' host='localhost' password='trial@123'")
+                    conn = psycopg2.connect("dbname='trial_db' user='customer' host='localhost' password='123'")
                     cur = conn.cursor()
                 except:
                     print("Unable to connect to the database")
                     return HttpResponse("Unable to connect to the database")
 
                 phoneno = request.session['phoneno']
-                cur.execute(f"select customer_id from customer where phone_no = '{phoneno}'")
-                customer_id = str(cur.fetchone()[0])
+                cur.execute(f"select customer_id,username from customer where phone_no = '{phoneno}'")
+                row = cur.fetchone()
+                customer_id = str(row[0])
+                username = str(row[1])
 
 
                 query = f"SELECT reservation_date,vehicle_taken_date,expected_return_date,reservation_status,plt_no_id from reservation where customer_id = '{customer_id}'"
@@ -337,42 +363,12 @@ class customer_view():
                 cur.close()
                 conn.close()
 
-                context = {'phoneno':phoneno , 'reservations' : rows}
+                context = {'phoneno':phoneno , 'reservations' : rows , 'username' : username}
 
                 return render(request,'customer_access/view_reservations.html',context = context)
 
             else:
-                return HttpResponse("Sign in pls :(")
+                return HttpResponse("<script>alert('Please signin first')\
+                    ;window.location = '/signin/' ;</script>")
         else:
             return HttpResponse("METHOD NOT ALLOWED")
-'''
-    def vehicle(request):
-        if request.session.has_key('phoneno'):
-            try:
-                conn = psycopg2.connect("dbname='trial_db' user='postgres' host='localhost' password='trial@123'")
-                cur = conn.cursor()
-            except:
-                print("Unable to connect to the database")
-                return HttpResponse("Unable to connect to the database")
-
-            print("Working here")
-            #for key, value in kwargs.items():
-            #    print("%s == %s" %(key, value))
-
-            outlet = outlet_name.split(",")[0]
-
-            query = 'SELECT plate_number FROM vehicles where outlet_name = %s'
-
-            cur.execute(query,(outlet))
-            rows = cur.fetchall()
-            print(rows)
-
-            cur.close()
-            conn.close()
-
-            context = {'outlet': list_of_vehicles}
-            return HttpResponse("WOrking")
-'''
-
-# phoneno = request.session['phoneno']
-# select customer_id from customer where phone_no = phoneno

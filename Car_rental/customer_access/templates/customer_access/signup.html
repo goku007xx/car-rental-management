@@ -1,35 +1,87 @@
 {% load static %}
 
-<!DOCTYPE html>    
-<html>    
-<head>    
-    <title>Signup Form</title>       
-    <link rel="stylesheet" type="text/css" href="{% static 'customer_access/styles.css' %}">
-</head>    
-<body>  
-    <div class="center-div">
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Signup Form</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'customer_access/signinup.css' %}">
+
+
+</head>
+
+<body>
+    <!-- <div class="center-div">
         <p id="signupname">Signup</p>
+    </div> -->
+
+    <!-- <div class="signup" id="signupdiv">
+        <form id="signup" method="POST" action="">
+            <label><b>User Name
+                </b>
+            </label>
+            <input type="text" name="Uname" id="Uname" placeholder="Username">
+            <br><br>
+            <label><b>Password
+                </b>
+            </label>
+            <input type="Password" name="Pass" id="Pass" placeholder="Password">
+            <br><br>
+            <label><b>PhoneNo
+                </b>
+            </label>
+            <input type="text" name="Phoneno" id="Phoneno" placeholder="Phoneno">
+            <br><br>
+            <input type="submit" name="log" id="log" value="submit">
+        </form>
+    </div> -->
+
+    
+
+    <div class="center">
+        <h1>Signup</h1>
+        <form method="post" id="signup" action="">
+            <div class="txt_field">
+                <input type="text" name="Uname" id="Uname" required>
+                <span></span>
+                <label>User name</label>
+            </div>
+            <div class="txt_field">
+                <input type="text" name="Phoneno" id="Phoneno" required>
+                <span></span>
+                <label>Phone number</label>
+            </div>
+            <div class="txt_field">
+                <input type="password" name="Pass" id="Pass" required>
+                <span></span>
+                <label>Password</label>
+            </div>
+            <!-- {% if messages %}
+            {% for message in messages %}
+            <div class="container-fluid p-0">
+                <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                    {{ message }}
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %} -->
+
+            <!-- {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                {{ message }}
+                {% endfor %}
+            </div>
+            <br>
+            {% endif %} -->
+
+            <input type="submit" name="log" id="log" value="signup">
+            <div class="signup_link">
+                already have account? <a href="/signin">Signin</a>
+            </div>
+        </form>
     </div>
-  
-    <div class="signup" id="signupdiv">    
-    <form id="signup" method="POST" action="">    
-        <label><b>User Name     
-        </b>    
-        </label>    
-        <input type="text" name="Uname" id="Uname" placeholder="Username">    
-        <br><br>    
-        <label><b>Password     
-        </b>    
-        </label>    
-        <input type="Password" name="Pass" id="Pass" placeholder="Password">    
-        <br><br>  
-        <label><b>PhoneNo    
-        </b>    
-        </label>    
-        <input type="text" name="Phoneno" id="Phoneno" placeholder="Phoneno">    
-        <br><br>  
-        <input type="submit" name="log" id="log" value="submit">          
-    </form>     
-</div>    
-</body>    
+
+</body>
+
 </html>

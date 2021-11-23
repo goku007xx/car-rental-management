@@ -31,7 +31,7 @@ class authentication():
 
         elif request.method == 'POST':
             try:
-                conn = psycopg2.connect("dbname='trial_db' user='postgres' host='localhost' password='trial@123'")
+                conn = psycopg2.connect("dbname='trial_db' user='employee' host='localhost' password='456'")
                 cur = conn.cursor()
             except:
                 print("Unable to connect to the database")
@@ -58,11 +58,13 @@ class authentication():
     
                 cur.close()
                 conn.close()
-                return HttpResponse("Wrong username or password")
+                return HttpResponse("<script>alert('Wrong username or password')\
+                    ;window.location = '/signin/' ;</script>")
             else:
                 cur.close()
                 conn.close()
-                return HttpResponse("Fields not submitted properly")
+                return HttpResponse("<script>alert('Fields not set properly')\
+                    ;window.location = '/signup/' ;</script>")
 
         else:
             return HttpResponse("METHOD NOT ALLOWED")
@@ -70,7 +72,8 @@ class authentication():
     def logout(request):
         try:
             del request.session['emp_phoneno']
-            return HttpResponse("<strong>Employee Logged out Successfully.</strong>")
+            return HttpResponse("<script>alert('Successfully logged out')\
+                    ;window.location = '/employee/signin/' ;</script>")
         except:
             print("Logout not Work!!!")
             return HttpResponse("<strong>Failure in Logging out.</strong>")
@@ -83,7 +86,7 @@ class employee_view():
             if request.session.has_key('emp_phoneno'):
 
                 try:
-                    conn = psycopg2.connect("dbname='trial_db' user='postgres' host='localhost' password='trial@123'")
+                    conn = psycopg2.connect("dbname='trial_db' user='employee' host='localhost' password='456'")
                     cur = conn.cursor()
                 except:
                     print("Unable to connect to the database")
@@ -118,7 +121,7 @@ class employee_view():
         if request.method =='GET':
             if request.session.has_key('emp_phoneno'):
                 try:
-                    conn = psycopg2.connect("dbname='trial_db' user='postgres' host='localhost' password='trial@123'")
+                    conn = psycopg2.connect("dbname='trial_db' user='employee' host='localhost' password='456'")
                     cur = conn.cursor()
                 except:
                     print("Unable to connect to the database")
@@ -151,7 +154,7 @@ class employee_view():
         if request.method =='GET':
             if request.session.has_key('emp_phoneno'):
                 try:
-                    conn = psycopg2.connect("dbname='trial_db' user='postgres' host='localhost' password='trial@123'")
+                    conn = psycopg2.connect("dbname='trial_db' user='employee' host='localhost' password='456'")
                     cur = conn.cursor()
                 except:
                     print("Unable to connect to the database")
@@ -213,7 +216,7 @@ class employee_view():
         if request.method =='POST':
             if request.session.has_key('emp_phoneno'):
                 try:
-                    conn = psycopg2.connect("dbname='trial_db' user='postgres' host='localhost' password='trial@123'")
+                    conn = psycopg2.connect("dbname='trial_db' user='employee' host='localhost' password='456'")
                     cur = conn.cursor()
                 except:
                     print("Unable to connect to the database")
@@ -248,7 +251,8 @@ class employee_view():
                 #return redirect('/employee/home/')
 
             else:
-                return redirect('/employee/signin/')
+                return HttpResponse("<script>alert('Please signin')\
+                    ;window.location = '/employee/signin/' ;</script>")
         else:
             return HttpResponse("METHOD NOT ALLOWED")
 
@@ -258,7 +262,7 @@ class employee_view():
         if request.method =='POST':
             if request.session.has_key('emp_phoneno'):
                 try:
-                    conn = psycopg2.connect("dbname='trial_db' user='postgres' host='localhost' password='trial@123'")
+                    conn = psycopg2.connect("dbname='trial_db' user='employee' host='localhost' password='456'")
                     cur = conn.cursor()
                 except:
                     print("Unable to connect to the database")
@@ -324,7 +328,8 @@ class employee_view():
                 return HttpResponse("Works1")
 
             else:
-                return redirect('/employee/signin/')
+                return HttpResponse("<script>alert('Please signin')\
+                    ;window.location = '/employee/signin/' ;</script>")
         else:
             return HttpResponse("METHOD NOT ALLOWED")
 
@@ -334,7 +339,7 @@ class employee_view():
             if request.session.has_key('emp_phoneno'):
 
                 try:
-                    conn = psycopg2.connect("dbname='trial_db' user='postgres' host='localhost' password='trial@123'")
+                    conn = psycopg2.connect("dbname='trial_db' user='employee' host='localhost' password='456'")
                     cur = conn.cursor()
                 except:
                     print("Unable to connect to the database")
@@ -358,12 +363,13 @@ class employee_view():
                     return HttpResponse("INVALID REQUEST")
 
             else:
-                return HttpResponse("Sign in first")
+                return HttpResponse("<script>alert('Please signin')\
+                    ;window.location = '/employee/signin/' ;</script>")
 
         elif request.method == 'POST':
             if request.session.has_key('emp_phoneno'):
                 try:
-                    conn = psycopg2.connect("dbname='trial_db' user='postgres' host='localhost' password='trial@123'")
+                    conn = psycopg2.connect("dbname='trial_db' user='employee' host='localhost' password='456'")
                     cur = conn.cursor()
                 except:
                     print("Unable to connect to the database")
@@ -397,11 +403,12 @@ class employee_view():
                 cur.close()
                 conn.close()
 
-                response = redirect('/employee/view_approve/')
-                return response
+                return HttpResponse("<script>alert('Successfully updated rent')\
+                    ;window.location = '/employee/view_approve/' ;</script>")
 
             else:
-                return HttpResponse("Pls Sign in")
+                return HttpResponse("<script>alert('Please signin')\
+                    ;window.location = '/employee/signin/' ;</script>")
 
         else:
             return HttpResponse("METHOD NOT ALLOWED")
@@ -412,7 +419,7 @@ class employee_view():
         if request.method =='GET':
             if request.session.has_key('emp_phoneno'):
                 try:
-                    conn = psycopg2.connect("dbname='trial_db' user='postgres' host='localhost' password='trial@123'")
+                    conn = psycopg2.connect("dbname='trial_db' user='employee' host='localhost' password='456'")
                     cur = conn.cursor()
                 except:
                     print("Unable to connect to the database")
@@ -440,7 +447,7 @@ class employee_view():
         elif request.method == 'POST':
             if request.session.has_key('emp_phoneno'):
                 try:
-                    conn = psycopg2.connect("dbname='trial_db' user='postgres' host='localhost' password='trial@123'")
+                    conn = psycopg2.connect("dbname='trial_db' user='employee' host='localhost' password='456'")
                     cur = conn.cursor()
                 except:
                     print("Unable to connect to the database")
@@ -458,11 +465,15 @@ class employee_view():
 
                 if(amt_to_be_paid > int(cash)):
                     print("Less cash u have")
-                    return redirect('/employee/view_approve/')
+                    return HttpResponse("<script>alert('Less cash u have')\
+                    ;window.location = '/employee/view_approve/' ;</script>")
+                    #return redirect('/employee/view_approve/')
 
                 if(amt_to_be_paid != int(cash)):
                     print("Too much cash u have")
-                    return redirect('/employee/view_approve/')
+                    return HttpResponse("<script>alert('More cash u have')\
+                    ;window.location = '/employee/view_approve/' ;</script>")
+                    #return redirect('/employee/view_approve/')
 
                 query = f"select reservation_id from rent where bill_id = '{bid}'"
                 cur.execute(query)
@@ -501,7 +512,8 @@ class employee_view():
                 return response
 
             else:
-                return HttpResponse("Pls Sign in")
+                return HttpResponse("<script>alert('Please signin')\
+                    ;window.location = '/employee/signin/' ;</script>")
 
         else:
             return HttpResponse("METHOD NOT ALLOWED")
