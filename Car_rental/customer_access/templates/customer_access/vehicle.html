@@ -11,7 +11,14 @@
 </head>
 
 <body style="height: 100vh;">
-
+    <div>
+            <h2>Recommendations (basic statistics)</h2>
+            {% for recom in recommended %}
+                <h4>-->{{ recom.0 }} Has been selected by {{ recom.1 }} customers </h4>
+                {% empty %}
+                  <h4>No recommendations found</h4>
+            {% endfor %}
+    </div>
     <div class="inreservation">
 
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
@@ -30,10 +37,29 @@
                 <br><br>
                 <label><b>Vehicles</b></label>
                 <br>
-                {% for vehicle in vehicle_list %}
-                <input type="radio" id="{{vehicle}}" name="plate-no" value="{{vehicle}}">
-                <label for={{vehicle}}>{{vehicle}}</label><br>
-                {% endfor %}
+
+                <table style="width:50%">
+                   <tr>
+                       <th>Plate Number</th>
+                       <th>Model</th>
+                       <th>number of seats</th>
+                       <th>AC</th>
+                       <th>Cost/day</th>
+                       <th>Choice</th>
+                   </tr> 
+                   {% for vehicle in vehicle_list %}
+                    <label for="m_{{vehicle.0}}">
+                   <tr>
+                        <td>{{vehicle.0}}</td>
+                        <td>{{vehicle.1}}</td>
+                        <td>{{vehicle.2}}</td>
+                        <td>{{vehicle.3}}</td>
+                        <td>{{vehicle.4}}</td>
+                        <td><input type="radio" id="m_{{vehicle.0}}" name="plate-no" value="{{vehicle.0}}"></td>
+                   </tr>
+                    </label>
+                   {% endfor %}
+                </table>
     
                 <br><br>
                 <input type="submit" name="log" id="log" value="submit" style="width: 300px;height: 50px;font-size: 18px;

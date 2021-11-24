@@ -57,3 +57,7 @@ p{
     margin-top: 2%;
     font-size: 30px;
 }
+
+table,th,td {
+    border:2px solid black;
+}

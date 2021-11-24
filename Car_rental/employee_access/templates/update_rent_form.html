@@ -11,9 +11,19 @@
             <input type="text" name="bid" value="{{bill_id}}" readonly>
         <br><br>
         <label>Actual Date returned</label>
-            <input type="text" name="ret_date" placeholder="Actual return date">
+            <input type="text" name="ret_date" onchange = "date1()" id="ret_date" ,placeholder="YYYY-MM-DD" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" title="Enter a date in this format YYYY-MM-DD" />
         <br><br>  
         <input type="submit" name="log" id="log" value="submit">          
     </form>
+    <script>
+    function date1(){
+        var startDate = document.getElementById("ret_date").value;
+
+        if ((Date.now() > Date.parse(startDate))) {
+          alert("Enter a valid date");
+          document.getElementById("Veh_take_date").value = "";
+        }
+    };
+    </script>
 </body>
 </html>

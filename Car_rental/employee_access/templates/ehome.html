@@ -4,5 +4,11 @@
 <h3> Hello {{empname}} </h3>
 <button onclick="window.location.href='/employee/view_res/'">View Reservation</button>
 <button onclick="window.location.href='/employee/view_approve/'">Finalise bill</button>
+<h4> Top customer in this outlet </h4>
+{% for values in cust_ids %}
+	<h1>-->{{values.0}} With {{values.1}} reservations</h1>
+	{% empty %}
+        <h5>No customers here</h5>
+{% endfor %}
 
 {% endblock %}

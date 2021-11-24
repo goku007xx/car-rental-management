@@ -34,14 +34,14 @@
                 <!-- <input type="text" name="Veh_take_date" id="Veh_take_date" placeholder="Taking Date">    -->
                 <!-- <input type="date" id="Veh_take_date" name="Veh_take_date">  -->
 
-                <input type="text" name="Veh_take_date" id="Veh_take_date" ,placeholder="YYYY-MM-DD" required
+                <input type="text" onchange = "date1()" name="Veh_take_date" id="Veh_take_date" ,placeholder="YYYY-MM-DD" required
                     pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" title="Enter a date in this formart YYYY-MM-DD" />
                 <br><br>
                 <label><b>Expected Return Date (YYYY-MM-DD)
                     </b>
                 </label>
                 <!-- <input type="text" name="exp_ret_date" id="exp_ret_date" placeholder="Return Date">     -->
-                <input type="text" name="exp_ret_date" id="exp_ret_date" ,placeholder="YYYY-MM-DD" required
+                <input type="text" name="exp_ret_date" onchange = "date2()" id="exp_ret_date" ,placeholder="YYYY-MM-DD" required
                     pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" title="Enter a date in this formart YYYY-MM-DD" />
 
                 <br><br>
@@ -67,7 +67,27 @@
         </div>
 
     </div>
+    <script>
+    function date2(){
+        var startDate = document.getElementById("Veh_take_date").value;
+        var endDate = document.getElementById("exp_ret_date").value;
 
+        if ((Date.parse(endDate) < Date.parse(startDate))) {
+          alert("End date should be greater than Start date");
+          document.getElementById("exp_ret_date").value = "";
+        }
+    };
+
+    function date1(){
+        var startDate = document.getElementById("Veh_take_date").value;
+        var endDate = document.getElementById("exp_ret_date").value;
+
+        if ((Date.now() > Date.parse(startDate))) {
+          alert("Enter a valid date");
+          document.getElementById("Veh_take_date").value = "";
+        }
+    };
+</script>
 
 </body>
 

@@ -35,6 +35,7 @@ class Vehicle(models.Model):
 	no_of_seats = models.IntegerField()
 	ac = models.BooleanField()
 	vehicle_status = models.CharField(max_length = 25)
+	cost_per_day = models.IntegerField(default = 1000)
 
 	outlet = models.ForeignKey(Outlet,on_delete=models.PROTECT)
 

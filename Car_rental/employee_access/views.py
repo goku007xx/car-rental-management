@@ -59,12 +59,12 @@ class authentication():
                 cur.close()
                 conn.close()
                 return HttpResponse("<script>alert('Wrong username or password')\
-                    ;window.location = '/signin/' ;</script>")
+                    ;window.location = '/employee/signin/' ;</script>")
             else:
                 cur.close()
                 conn.close()
                 return HttpResponse("<script>alert('Fields not set properly')\
-                    ;window.location = '/signup/' ;</script>")
+                    ;window.location = '/employee/signin/' ;</script>")
 
         else:
             return HttpResponse("METHOD NOT ALLOWED")
@@ -101,7 +101,39 @@ class employee_view():
 
                 emp_name = row[0]
 
-                context={"empname":emp_name}
+                query_outlet = f"select employee_name,outlet_id from employee where employee_phone_no='{phoneno}'"
+                cur.execute(query_outlet)
+                row = cur.fetchone()
+                print("get emp:",row)
+                name = row[0]
+                outlet = row[1]
+                
+
+                query = f"select customer_id,count(*)\
+                        from reservation\
+                        where outlet_id='{outlet}' and reservation_status='approved'\
+                        group by customer_id;"
+
+                cur.execute(query)
+                rows = cur.fetchall()
+                try:
+                    c_id = rows[0][0]
+                    counts = rows[0][1]
+                except:
+                    new_list = []
+                    context={"empname":emp_name , 'cust_ids' : new_list}
+                    return render(request, 'ehome.html', context)
+                #cust_ids = [i for i in rows[0]]
+                
+                print('customer stats:')
+                #print(rows)
+                query = f"select username from customer where customer_id = '{c_id}'"
+                cur.execute(query)
+                name = cur.fetchone()[0]
+                new_list = []
+                new_list.append([name,counts])
+
+                context={"empname":emp_name , 'cust_ids' : new_list}
                         #"reservations":rows
                     #request.session.set_expiry(300)
                 
@@ -308,6 +340,13 @@ class employee_view():
                 conn.commit()
 
                 print("HereA2")
+
+                amt_query = f"select cost_per_day from vehicle where plate_number='{plate_no}'"
+                cur.execute(amt_query)
+                amt = cur.fetchone()[0]
+                print("Amount:",amt)
+
+
                 # generate default bill
                 rent_insert_query = f'INSERT INTO rent (taken_date , return_date , no_of_days , tax_amt , total_amt , refund , customer_id , plt_no_id , reservation_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s);'
 
@@ -316,7 +355,7 @@ class employee_view():
                 refund = advance
                 
                 # CAN query model type and AC/no AC and do if else for base amount (WHICH GURU KIRAN WILL DO(MUST DO!))
-                amt = 1000
+                #amt = 1000
                 tax = 200
                 total = (num_days*amt)+tax
                 cur.execute(rent_insert_query,(v_t_d.strftime('%Y-%m-%d'), e_r_d.strftime('%Y-%m-%d'), num_days , 200, total ,refund,cust_id,plate_no,res_id))
@@ -388,7 +427,13 @@ class employee_view():
                 cur.execute(query_select)
                 row = cur.fetchone()
 
-                amt_per_day = 1000
+                plate_no = row[8]
+                amt_query = f"select cost_per_day from vehicle where plate_number='{plate_no}'"
+                cur.execute(amt_query)
+                amt_per_day = cur.fetchone()[0]
+                #print("Amount:",amt)
+
+                #amt_per_day = 1000
 
                 t_d = row[1]
                 r_d = row[2]
@@ -508,8 +553,10 @@ class employee_view():
                 cur.close()
                 conn.close()
 
-                response = redirect('/employee/home/')
-                return response
+                return HttpResponse("<script>alert('Successfully paid required amount')\
+                    ;window.location = '/employee/home/' ;</script>")
+                #response = redirect('/employee/home/')
+                #return response
 
             else:
                 return HttpResponse("<script>alert('Please signin')\

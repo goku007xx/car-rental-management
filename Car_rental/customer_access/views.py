@@ -258,15 +258,20 @@ class customer_view():
                     row = cur.fetchone()
                     outlet_id = str(row[0])
                     
-                    query = f"SELECT plate_number FROM vehicle where outlet_id = %s and vehicle_status = %s"
+                    query = f"SELECT plate_number, model, no_of_seats, ac, cost_per_day FROM vehicle where outlet_id = %s and vehicle_status = %s"
 
                     cur.execute(query,(outlet_id,'not-taken'))
                     rows = cur.fetchall()
                     #print(rows)
-                    rows = [i[0] for i in rows]
+                    #rows = [i[0] for i in rows]
+
+                    query = f"select plt_no_id, count(*) from reservation where reservation_status='approved' and outlet_id=%s group by plt_no_id"
+                    cur.execute(query, (outlet_id))
+                    recommend_rows = cur.fetchall()
+
                     cur.close()
                     conn.close()
-                    context = {'vehicle_list' : rows , 'v_t_d' : v_t_d , 'e_r_d' : e_r_d , 'outlet_name' : outlet}
+                    context = {'vehicle_list' : rows , 'v_t_d' : v_t_d , 'e_r_d' : e_r_d , 'outlet_name' : outlet , 'recommended': recommend_rows}
                     return render(request,'customer_access/vehicle.html',context = context)
                     
                     #return HttpResponse("U gave values")
@@ -304,14 +309,15 @@ class customer_view():
                 cur.execute(f"select customer_id from customer where phone_no = '{phoneno}'")
                 customer_id = str(cur.fetchone()[0])
 
-                cur.execute(f"select employee_id from employee")
-                employee_id_list = [i[0] for i in cur.fetchall()]
-                #print(employee_id_list)
-                #print(outlet)
                 cur.execute(f"SELECT outlet_id FROM outlet where name = '{outlet}'")
                 row = cur.fetchone()
                 outlet_id = str(row[0])
 
+                cur.execute(f"select employee_id from employee where outlet_id = '{outlet_id}'")
+                employee_id_list = [i[0] for i in cur.fetchall()]
+                #print(employee_id_list)
+                #print(outlet)
+                print(employee_id_list)
                 random_employee_id = random.choice(employee_id_list)
 
                 reservation_insert_query = f'INSERT INTO reservation (reservation_date,vehicle_taken_date,expected_return_date,advance,reservation_status,customer_id,emp_id,outlet_id,plt_no_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s);'
