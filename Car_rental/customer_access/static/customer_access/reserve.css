@@ -13,24 +13,25 @@ html{
 }
 p{
     
-    font-size: 60px;
+    font-size: 45px;
     
 }
 
 
-/* .inreservation{
+.inreservation_view{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     height: 100%;
     padding: 0;
     margin: 0;
     width: 100%;
-    margin-top: 150px;
+    margin-top: 100px;
     margin-left: 30%;
     
     align-items: center;
     justify-content: center;
     color: white;
-} */
+}
+
 .inreservation{
     position: absolute;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -45,8 +46,9 @@ p{
 .inreservation input{
     width: 100%;
                 padding: 0 5px;
-                height: 40px;
-                font-size: 16px;
+                height: 30px;
+                width: 120px;
+                font-size: 20px;
                 border: none;
                 background: white;
                 outline: none;
@@ -55,7 +57,7 @@ p{
 
 #reservation{
     margin-top: 2%;
-    font-size: 30px;
+    font-size: 15px;
 }
 
 table,th,td {
