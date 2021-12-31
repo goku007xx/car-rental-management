@@ -4,29 +4,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- <meta charset="UTF-8"> -->
-    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View reservations</title>
     <link rel="stylesheet" type="text/css" href="{% static 'customer_access/reserve.css' %}">
 
 </head>
 <body>
+    <button style="width: 100px;height: 50px;font-size: 18px;
+                            position:fixed;
+                            right:10px;
+                            top:5px;
+                            font-weight: 700;
+                            cursor: pointer;
+                            outline: none;" type="button" class="btn btn-secondary" id="b5"
+                                onclick="window.location.href='/logout'">Logout</button>
+
+    <button style="width: 100px;height: 50px;font-size: 18px;
+                            position:fixed;
+                            left:10px;
+                            top:5px;
+                            font-weight: 700;
+                            cursor: pointer;
+                            outline: none;" type="button" class="btn btn-secondary" id="b7"
+                                onclick="window.location.href='/home'">Home</button>
     
-    
-    <div class="inreservation_view">
-        <br><br> <br><br>
-        <h3> Hello {{username}} </h3>
-        <h2>View Reservation </h2><br>  
+    <div class="view_home">
+        <h1 style="font-size: 50px"> Hello {{username}}, </h1>
+        <h2>All Reservations </h2><br>  
  
         {% for res in reservations %}
         <!-- reservation_date,vehicle_taken_date,expected_return_date,reservation_status,plt_no_id -->
             <h5>{{ res.0 }}</h5>
             <ul>
-                <li>vehicle taken date:{{ res.1 }}</li>
-                <li>expected return date:{{ res.2 }}</li>
-                <li>reservation status:{{ res.3 }}</li>
-                <li>plate number:{{ res.4 }}</li>
+                <li ><strong>Vehicle taken date:</strong>&ensp;&ensp;&ensp;{{ res.1 }}</li>
+                <li ><strong>Expected return date:</strong>&ensp;&ensp;&ensp;{{ res.2 }}</li>
+                <li ><strong>Reservation status:</strong>&ensp;&ensp;&ensp;{{ res.3 }}</li>
+                <li ><strong>Plate number:</strong>&ensp;&ensp;&ensp;{{ res.4 }}</li>
                 <br>
             </ul>
             <br>

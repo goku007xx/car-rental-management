@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="{% static 'employee_access/ehome.css' %}">
+  <title></title>
+</head>
+<body>
+    
+  <div class="bg-image"></div>
+  <div>
+    <button style="width: 100px;height: 50px;font-size: 18px;
+                            position:fixed;
+                           right:10px;
+                           top:5px;
+                           overflow: hidden;
+                            font-weight: 700;
+                            cursor: pointer;
+                            outline: none;" type="button" class="btn btn-secondary" id="b9"
+                                onclick="window.location.href='/employee/logout'">Logout</button>
+  </div>
+  <div class="bg-text">
+      <h1 style="font-size: 50px">HOME PAGE</h1>
+
+      {% block content %}
+      <h2> Hello {{empname}}, </h2>
+      <br><br>
+      <button style="width: 150px;height: 50px;font-size: 14px;" onclick="window.location.href='/employee/view_res/'">View Reservation</button><br><br>
+      <button style="width: 150px;height: 50px;font-size: 14px;" onclick="window.location.href='/employee/view_approve/'">Finalise bill</button>
+      
+      <h2> Top customer in this outlet </h2>
+          {% for values in cust_ids %}
+            <h3>-->{{values.0}} With {{values.1}} reservations</h3>
+            {% empty %}
+                  <h5>No customers here</h5>
+          {% endfor %}
+      </div>
+    {% endblock %}
+  </div>
+</body>
+</html>
+

@@ -1,19 +1,26 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en" style="background-color:#F4F0DB;
+    height: 100%;
+    width: 100%;
+    color: brown;">
 <head>
 	<title>Payment form</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'employee_access/ehome.css' %}">
 </head>
 <body>
-	<h2>PAYMENT</h2><br>    
-    <div class="payment">
+	  
+    <div   class='approve'>
+        <h2>PAYMENT</h2><br> 
 	<form id="pay" method="POST">    
         <label>BILL ID</label>
-            <input type="text" name="bid" value="{{bill_id}}" readonly>
+            <input type="text" name="bid" value="{{bill_id}}" readonly class=''>
         <br><br>
         <label>Amount</label>
             <input type="text" name="cash" placeholder="Enter Amount">
         <br><br>  
         <input type="submit" name="log" id="log" value="submit">          
     </form>
+    </div>
 </body>
 </html>

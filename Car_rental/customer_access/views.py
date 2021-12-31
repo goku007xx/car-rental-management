@@ -237,15 +237,6 @@ class customer_view():
                     print("Unable to connect to the database")
                     return HttpResponse("Unable to connect to the database")   
 
-                '''
-                reservation_string = request.body.decode('utf-8')
-                print(reservation_string)
-                fields = reservation_string.split('&')
-                v_t_d = fields[0].split('=')[1]
-                e_r_d = fields[1].split('=')[1]
-                outlet_name = fields[2].split('=')[1]
-                print(outlet_name)
-                '''
                 v_t_d = request.POST.get('Veh_take_date')
                 e_r_d = request.POST.get('exp_ret_date')
                 outlet_name = request.POST.get('outlet')
@@ -258,6 +249,12 @@ class customer_view():
                     row = cur.fetchone()
                     outlet_id = str(row[0])
                     
+                    query2 = f"SELECT outlet_phone,outlet_mail FROM outlet_contact where outlet_id= '{outlet_id}'"
+                    cur.execute(query2)
+                    row = cur.fetchone()
+                    outlet_phone = str(row[0])
+                    outlet_mail = str(row[1])
+
                     query = f"SELECT plate_number, model, no_of_seats, ac, cost_per_day FROM vehicle where outlet_id = %s and vehicle_status = %s"
 
                     cur.execute(query,(outlet_id,'not-taken'))
@@ -265,13 +262,13 @@ class customer_view():
                     #print(rows)
                     #rows = [i[0] for i in rows]
 
-                    query = f"select plt_no_id, count(*) from reservation where reservation_status='approved' and outlet_id=%s group by plt_no_id"
+                    query = f"select plt_no_id, count(*) from reservation where reservation_status='completed' and outlet_id=%s group by plt_no_id order by count(*) desc"
                     cur.execute(query, (outlet_id))
                     recommend_rows = cur.fetchall()
 
                     cur.close()
                     conn.close()
-                    context = {'vehicle_list' : rows , 'v_t_d' : v_t_d , 'e_r_d' : e_r_d , 'outlet_name' : outlet , 'recommended': recommend_rows}
+                    context = {'vehicle_list' : rows , 'v_t_d' : v_t_d , 'e_r_d' : e_r_d , 'outlet_name' : outlet , 'recommended': recommend_rows , 'outlet_phone':outlet_phone , 'outlet_mail':outlet_mail}
                     return render(request,'customer_access/vehicle.html',context = context)
                     
                     #return HttpResponse("U gave values")
@@ -300,6 +297,10 @@ class customer_view():
                 v_t_d = request.POST.get('v_t_d')
                 e_r_d = request.POST.get('e_r_d')
                 plate_no = request.POST.get('plate-no')
+                if(plate_no==None):
+                    messages.error(request,"Please choose a vehicle!!")
+                    return HttpResponseRedirect("/reservation")
+
                 outlet = request.POST.get('outlet')
                 reservation_date = dt.now().strftime('%Y-%m-%d')     # Should be date/time of taking reservation
                 reservation_status = 'inprogress'

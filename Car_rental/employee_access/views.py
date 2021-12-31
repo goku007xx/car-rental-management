@@ -27,7 +27,7 @@ class authentication():
                 #return HttpResponse("Signed in :)")
 
             else:
-                return render(request,'esignin.html')
+                return render(request,'employee_access/esignin.html')
 
         elif request.method == 'POST':
             try:
@@ -111,7 +111,7 @@ class employee_view():
 
                 query = f"select customer_id,count(*)\
                         from reservation\
-                        where outlet_id='{outlet}' and reservation_status='approved'\
+                        where outlet_id='{outlet}' and reservation_status='completed'\
                         group by customer_id;"
 
                 cur.execute(query)
@@ -122,7 +122,7 @@ class employee_view():
                 except:
                     new_list = []
                     context={"empname":emp_name , 'cust_ids' : new_list}
-                    return render(request, 'ehome.html', context)
+                    return render(request, 'employee_access/ehome2.html', context)
                 #cust_ids = [i for i in rows[0]]
                 
                 print('customer stats:')
@@ -137,7 +137,7 @@ class employee_view():
                         #"reservations":rows
                     #request.session.set_expiry(300)
                 
-                return render(request, 'ehome.html', context)
+                return render(request, 'employee_access/ehome2.html', context)
                 #phoneno = request.session['emp_phoneno']
                 #context = {'phoneno' : phoneno}
 
@@ -177,7 +177,7 @@ class employee_view():
 
             context = {'empname' : emp_name , 'reservations' : rows}
 
-            return render(request,'view_res.html',context = context)
+            return render(request,'employee_access/view_res.html',context = context)
         else:
             HttpResponse('METHOD NOT ALLOWED')
 
@@ -237,7 +237,7 @@ class employee_view():
             print(rents)
             context = {'empname' : emp_name , 'rents' : rents}
             
-            return render(request,'view_approve.html',context = context)
+            return render(request,'employee_access/view_approve.html',context = context)
         else:
             print("METHOD NOT ALLOWED")
 
@@ -397,7 +397,7 @@ class employee_view():
                 print("here")
                 if(bid):
                     context = {'bill_id' : bid}
-                    return render(request,'update_rent_form.html',context = context)
+                    return render(request,'employee_access/update_rent_form.html',context = context)
                 else:
                     return HttpResponse("INVALID REQUEST")
 
@@ -482,7 +482,7 @@ class employee_view():
 
                 if(bid):
                     context = {'bill_id' : bid}
-                    return render(request,'payment.html',context = context)
+                    return render(request,'employee_access/payment.html',context = context)
                 else:
                     return HttpResponse("INVALID REQUEST")
                     

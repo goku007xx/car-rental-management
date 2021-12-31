@@ -11,19 +11,39 @@
 </head>
 
 <body style="height: 100vh;">
-    <div>
-            <h2>Recommendations (basic statistics)</h2>
+    <button style="width: 100px;height: 50px;font-size: 18px;
+                            position:fixed;
+                             right:10px;
+                             top:5px;
+                            font-weight: 700;
+                            cursor: pointer;
+                            outline: none;" type="button" class="btn btn-secondary" id="b8"
+                                onclick="window.location.href='/logout'">Logout</button>
+
+    <button style="width: 100px;height: 50px;font-size: 18px;
+                            position:fixed;
+                             left:10px;
+                             top:5px;
+                            font-weight: 700;
+                            cursor: pointer;
+                            
+                            outline: none;" type="button" class="btn btn-secondary" id="b9"
+                                onclick="window.location.href='/home'">Home</button>
+                                <br><br>
+    <div style="margin-top:50px">
+            <h2 style="color:red">Recommendations (basic statistics)</h2>
             {% for recom in recommended %}
                 <h4>-->{{ recom.0 }} Has been selected by {{ recom.1 }} customers </h4>
                 {% empty %}
                   <h4>No recommendations found</h4>
             {% endfor %}
     </div>
+
     <div class="inreservation">
 
-        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br>
 
-        <p>Vehicle Choices</p><br>
+        <p>Vehicle Choices</p>
         <div class="reservation">
             <form id="reservation" action="/vehicle_submission/" method="POST">
                 <label>vehicle taken date</label>
@@ -60,13 +80,16 @@
                     </label>
                    {% endfor %}
                 </table>
-    
-                <br><br>
-                <input type="submit" name="log" id="log" value="submit" style="width: 300px;height: 30px;font-size: 15px;
+                <br>
+                <input type="submit" name="log" id="log" value="submit" style="width: 175px;height: 40px;font-size: 18px;
                 color:  #3999dd;
                 font-weight: 700;
                 cursor: pointer;
                 outline: none;">
+                <br><br><br><br><br><br>
+                <label style="font-size:30px"><b>Outlet-Name:{{outlet_name}}</b></label><br>
+                <label style="font-size:30px"><b>Outlet-Phoneno:{{outlet_phone}}</b></label><br>
+                <label style="font-size:30px"><b>Outlet-Mail:{{outlet_mail}}</b></label><br>
                 <br>
                 <br><br>
             </form>

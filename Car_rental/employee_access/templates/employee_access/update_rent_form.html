@@ -1,12 +1,17 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en" style="background-color:#F4F0DB;
+    height: 100%;
+    width: 100%;
+    color: brown;">
 <head>
 	<title>Rent updation form</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'employee_access/ehome.css' %}">
 </head>
 <body>
-	<h2>Rent updation</h2><br>    
-    <div class="rent">
-	<form id="rent_updation" method="POST">    
+	<div class='approve'>
+        <h2>Rent updation</h2><br>  
+    <form id="rent_updation" method="POST">    
         <label>BILL ID</label>
             <input type="text" name="bid" value="{{bill_id}}" readonly>
         <br><br>
@@ -15,6 +20,11 @@
         <br><br>  
         <input type="submit" name="log" id="log" value="submit">          
     </form>
+
+    </div>
+      
+    
+
     <script>
     function date1(){
         var startDate = document.getElementById("ret_date").value;

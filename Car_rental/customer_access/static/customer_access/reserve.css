@@ -13,25 +13,24 @@ html{
 }
 p{
     
-    font-size: 45px;
+    font-size: 60px;
     
 }
 
 
-.inreservation_view{
+/* .inreservation{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     height: 100%;
     padding: 0;
     margin: 0;
     width: 100%;
-    margin-top: 100px;
+    margin-top: 150px;
     margin-left: 30%;
     
     align-items: center;
     justify-content: center;
     color: white;
-}
-
+} */
 .inreservation{
     position: absolute;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -43,12 +42,28 @@ p{
   align-items: center;
  
 }
+
+
+.view_home{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    margin-top: 100px;
+    margin-left: 30%;
+    
+    align-items: center;
+    justify-content: center;
+    color: white;
+ 
+}
+
 .inreservation input{
     width: 100%;
                 padding: 0 5px;
-                height: 30px;
-                width: 120px;
-                font-size: 20px;
+                height: 40px;
+                font-size: 16px;
                 border: none;
                 background: white;
                 outline: none;
@@ -56,7 +71,7 @@ p{
 
 
 #reservation{
-    margin-top: 2%;
+    margin-top: 10%;
     font-size: 15px;
 }
 

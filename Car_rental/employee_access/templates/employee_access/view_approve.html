@@ -1,13 +1,29 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="background-color:#F4F0DB;
+    height: 100%;
+    width: 100%;
+    color: brown;">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'employee_access/ehome.css' %}">
     <title>Document</title>
 </head>
 <body>
-    <h3> Hello {{empname}} </h3>
+
+    <button style="width: 100px;height: 50px;font-size: 18px;
+                            position:fixed;
+                            right:10px;
+                            top:5px;
+                            font-weight: 700;
+                            cursor: pointer;
+                            outline: none;" type="button" class="btn btn-secondary" id="b5"
+                                onclick="window.location.href='/employee/logout'">Logout</button>
+
+    <div class='container'>
+        <h3> Hello {{empname}} </h3>
     <h4>Return Page</h2><br>  
     
     
@@ -34,6 +50,8 @@
         {% empty %}
         <h5>No desk work today, pls go service the car</h5>
     {% endfor %}
+    </div>
+    
 <!-- 
     {% for location, rating, images in list_of_lists %}
 
