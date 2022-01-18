@@ -1,5 +1,5 @@
 from django.urls import path
-from django.conf.urls import include, url
+from django.conf.urls import include
 
 from customer_access.views import authentication
 from customer_access.views import customer_view
