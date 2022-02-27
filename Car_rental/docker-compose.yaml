@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  car_service:
+    build: .
+    ports:
+      - '5000:8000'
+    container_name: 'car-rental'
+    env_file:
+      - ./env/dep.env
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+volumes:
+  postgres_data:  
